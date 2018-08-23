@@ -5,106 +5,51 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <title>Title of the document</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('bower.static', filename='semantic/dist/semantic.min.css') }}">
-    <style type="text/css">
-        body {
-          background-color: #FFFFFF;
-        }
-
-        .ui.menu .item img.logo {
-          margin-right: 1.5em;
-        }
-
-
-        .ui.footer.segment {
-          margin: 5em 0em 0em;
-          padding: 5em 0em;
-        }
-    </style>
-
+    <title>{% block title %}{% endblock %} : DeepSeq2Tax</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('bower.static', filename='bootstrap/dist/css/bootstrap.min.css') }}">
+ <link href="{{ url_for('static', filename='css/globs.css') }}" rel="stylesheet">
 </head>
 
-<div class="ui menu">
-    <div class="ui container">
-        <a href="#" class="header item">
-            <img class="logo" src="assets/images/logo.png"> Project Name
-        </a>
-        <a href="#" class="item">Home</a>
-        <div class="ui simple dropdown item">
-            Dropdown <i class="dropdown icon"></i>
-            <div class="menu">
-                <a class="item" href="#">Link Item</a>
-                <a class="item" href="#">Link Item</a>
-                <div class="divider"></div>
-                <div class="header">Header Item</div>
-                <div class="item">
-                    <i class="dropdown icon"></i> Sub Menu
-                    <div class="menu">
-                        <a class="item" href="#">Link Item</a>
-                        <a class="item" href="#">Link Item</a>
-                    </div>
-                </div>
-                <a class="item" href="#">Link Item</a>
-            </div>
-        </div>
-    </div>
-</div>
+<body>
 
-<div class="ui main text container">
-    <h1 class="ui header">Semantic UI Fixed Template</h1>
-    <p>This is a basic fixed menu template using fixed size containers.</p>
-    <p>A text container is used for the main container, which is useful for single column layouts</p>
-</div>
 
-<div class="ui inverted vertical footer segment">
-    <div class="ui center aligned container">
-        <div class="ui stackable inverted divided grid">
-            <div class="three wide column">
-                <h4 class="ui inverted header">Group 1</h4>
-                <div class="ui inverted link list">
-                    <a href="#" class="item">Link One</a>
-                    <a href="#" class="item">Link Two</a>
-                    <a href="#" class="item">Link Three</a>
-                    <a href="#" class="item">Link Four</a>
-                </div>
-            </div>
-            <div class="three wide column">
-                <h4 class="ui inverted header">Group 2</h4>
-                <div class="ui inverted link list">
-                    <a href="#" class="item">Link One</a>
-                    <a href="#" class="item">Link Two</a>
-                    <a href="#" class="item">Link Three</a>
-                    <a href="#" class="item">Link Four</a>
-                </div>a
-            </div>
-            <div class="three wide column">
-                <h4 class="ui inverted header">Group 3</h4>
-                <div class="ui inverted link list">
-                    <a href="#" class="item">Link One</a>
-                    <a href="#" class="item">Link Two</a>
-                    <a href="#" class="item">Link Three</a>
-                    <a href="#" class="item">Link Four</a>
-                </div>
-            </div>
-            <div class="seven wide column">
-                <h4 class="ui inverted header">Footer Header</h4>
-                <p>Extra space for a call to action inside the footer that could help re-engage users.</p>
-            </div>
-        </div>
-        <div class="ui inverted section divider"></div>
-        <img src="assets/images/logo.png" class="ui centered mini image">
-        <div class="ui horizontal inverted small divided link list">
-            <a class="item" href="#">Site Map</a>
-            <a class="item" href="#">Contact Us</a>
-            <a class="item" href="#">Terms and Conditions</a>
-            <a class="item" href="#">Privacy Policy</a>
-        </div>
-    </div>
+
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
+    <div class="container">
+ <a class="navbar-brand" href="#">DeepSeq2Tax</a>
+ <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+   <span class="navbar-toggler-icon"></span>
+ </button>
+ <div class="collapse navbar-collapse" id="navbarCollapse">
+   <ul class="navbar-nav ml-auto">
+     <li class="nav-item">
+       <a class="nav-link" href="{{ url_for('index')}}">Home</a>
+     </li>
+     <li class="nav-item">
+       <a class="nav-link" href="{{ url_for('classifiers')}}">Classifiers</a>
+     </li>
+     <li class="nav-item">
+       <a class="nav-link" href="#">Docs</a>
+     </li>
+   </ul>
+ </div>
 </div>
-</body>
+</nav>
+
+<main role="main" class="container">
+  {% block body %} {%endblock %}
+</main>
+
+<footer class="footer">
+      <div class="container">
+        <span class="text-muted">Place sticky footer content here.</span>
+      </div>
+    </footer>
 
 <script src="{{ url_for('bower.static', filename='jquery/dist/jquery.min.js') }}"></script>
-<script src="{{ url_for('bower.static', filename='semantic/dist/semantic.min.js') }}"></script>
+<script src="{{ url_for('bower.static', filename='bootstrap/dist/js/bootstrap.min.js') }}"></script>
+
+</body>
+
 
 </html>
