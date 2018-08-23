@@ -100,5 +100,8 @@ venv.bak/
 # mkdocs documentation
 /site
 
+# Bower stuff
+app/bower_components
+
 # mypy
 .mypy_cache/

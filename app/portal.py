@@ -1,7 +1,12 @@
 import os
 from flask import Flask
+from flask_bower import Bower
+from flask import render_template
+
 
 app = Flask(__name__)
+Bower(app)
+
 
 @app.route("/help")
 def help():
@@ -13,4 +18,4 @@ def classifier():
 
 @app.route("/")
 def main():
-    return "Hello World"
+    return render_template("index.html")
