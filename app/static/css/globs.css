@@ -5,6 +5,7 @@ html {
   min-height: 100%;
   font-weight: 400;
   letter-spacing: 0.1px;
+  font-size: 18px;
 }
 
 body {
@@ -46,7 +47,11 @@ h5 {
 
 p {
   margin: 0 0 10px;
-  font-size: 18px;
+}
+
+label {
+  font-weight: 400;
+  color: #1e394c;
 }
 
 .footer {

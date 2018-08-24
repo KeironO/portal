@@ -1,28 +1,26 @@
-{% macro render_form_field(field, required=False, placeholder="", value=None) %}
+{% macro render_form_field(field, placeholder="", value=None) %}
     {% set css_class='form-control ' + kwargs.pop('class', '') %}
     <div class="form-group">
-      {{ field.validators}}
-        <label for="example-text-input">{{ field.label }}: {{ field.type }} {% if required != False %} (Required){% endif %}</label>
+        <label for="example-text-input">{{ field.label }}:</label>
             {% for error in field.errors %}
-                <div class="alert alert-danger">
-                    <i class="glyphicon glyphicon-alert"></i> <b>Error:</b> {{ error }}
+                <div class="alert alert-warning">
+                    <i class="glyphicon glyphicon-alert"></i>{{ error }}
                 </div>
             {% endfor %}
-
             {% if field.type == "StringField" %}
                 <input type="string" class="form-control" name="{{ field.name }}" placeholder="{{ placeholder }}" {% if value != None %}value="{{ value }}" {% endif %}>
-            {% elif type == "password" %}
-                {{ field(class=css_class, placeholder=placeholder, **kwargs) }}
             {% elif field.type == "SelectField" %}
                 <select class="form-control" name="{{ field.name}}">
                   {% for choice in field.choices %}
-                    <option>{{choice}}</option>
+                    <option value="{{choice[1]}}">{{choice[0]}}</option>
                   {% endfor %}
                 </select>
             {% elif type =="checkbox" %}
                <p>{{ field }} {{ label }}</p>
             {% elif field.type == "TextAreaField" %}
                 <textarea class="form-control" name="{{ field.name }}" placeholder="{{ placeholder }}"></textarea>
+            {% elif field.type == "IntegerField" %}
+                <input type="integer" class="form-control" name="{{ field.name }}">
             {% endif %}
     </div>
 {% endmacro %}

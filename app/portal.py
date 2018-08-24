@@ -25,10 +25,9 @@ def classifiers():
 
 @app.route("/contribute", methods=["GET", "POST"])
 def contribute():
-    form = forms.MetadataGeneratorForm()
+    form = forms.MetadataGeneratorForm(request.form)
     if form.validate_on_submit():
-        print("Hello World")
-        return render_template("contribute.html", form=form)
+        print(form)
 
     return render_template("contribute.html", form=form)
 
