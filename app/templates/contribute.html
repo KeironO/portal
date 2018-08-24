@@ -2,21 +2,38 @@
 
 {% block title %}Classifier{% endblock %}
 
+{% block jumbotron %}
+<div class="jumbotron heading">
+  <div class="container">
+  <h1>Contribute</h1>
+  </div>
+</div>
+{% endblock %}
+
 {% block body %}
 
-<div class="page-header">
-  <h1>Contribute</h1>
-</div>
-<p>We rely on...</p>
-
 <h2>Tutorial</h2>
+
+<ol>
+  <li>Generate a metadata file using the following tool.</li>
+
+</ol>
 
 <h2>Metadata Generator</h2>
 
 <form action="" method="POST">
   {{ form.hidden_tag() }}
 
-  {{ form.name.label }}
+  {{ render_form_field(form.name) }}
+  {{ render_form_field(form.description) }}
+  {{ render_form_field(form.ngrams) }}
+  {{ render_form_field(form.max_length) }}
+
+  {{ render_form_field(form.institution) }}
+
+  {{ render_form_field(form.author_names) }}
+  {{ render_form_field(form.email) }}
+
 
   {{ form.submit() }}
 </form>

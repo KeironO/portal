@@ -3,14 +3,21 @@
 html {
   position: relative;
   min-height: 100%;
+  font-weight: 400;
+  letter-spacing: 0.1px;
 }
 
 body {
   margin-bottom: 100px; /* Margin bottom by footer height */
   color: rgba(0, 0, 0, 0.75);
+  line-height: 24px;
 }
 
-.jumbotron {
+.jumbotron.heading {
+  padding: 2rem;
+}
+
+.jumbotron.home {
   margin-bottom: 0;
 }
 
@@ -23,10 +30,8 @@ body {
   color: #fff;
 }
 
-label {
-  font-weight: bold;
-  color: #1e394c;
-  line-height: 2;
+main {
+  padding-bottom: 1rem;
 }
 
 h1,
@@ -36,6 +41,12 @@ h4,
 h5 {
   color: #1e394c;
   line-height: 1.1;
+  font-weight: 400;
+}
+
+p {
+  margin: 0 0 10px;
+  font-size: 18px;
 }
 
 .footer {

@@ -12,9 +12,11 @@ app = Flask(__name__)
 app.config.from_object(Config)
 Bower(app)
 
+
 @app.route("/docs")
 def docs():
     return "Help page goes here."
+
 
 @app.route("/classifiers")
 def classifiers():
@@ -29,6 +31,7 @@ def contribute():
         return render_template("contribute.html", form=form)
 
     return render_template("contribute.html", form=form)
+
 
 @app.route("/")
 def index():
