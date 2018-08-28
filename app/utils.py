@@ -10,9 +10,9 @@ class Seq2Vec(object):
 
     def fasta2string(self, sequences):
         fasta_io = StringIO(sequences)
-        records = SeqIO.parse(fasta_io, "fasta")
-        for i in records:
-            print(i.id)
+        sequences = SeqIO.parse(fasta_io, "fasta")
+        for seq in sequences:
+            print(seq.id)
         fasta_io.close()
 
 
