@@ -35,7 +35,12 @@ def classifiers():
 
 @app.route("/classifiers/<id>")
 def classifier(id):
-    return render_template("classifiiers/classifier.html")
+    classifier_info = classifiers_dict[id]
+    form = forms.SequenceSubmission()
+    if form.validate_on_submit():
+        print(form)
+    return render_template("classifiers/classifier.html", id=id,
+                           info=classifier_info, form=form)
 
 @app.route("/contribute", methods=["GET", "POST"])
 def contribute():

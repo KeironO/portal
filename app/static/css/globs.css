@@ -27,6 +27,18 @@ body {
 
 .jumbotron.home {
   margin-bottom: 0;
+  background-image: url("../images/sequencers.png");
+  background-size: cover;
+  color: #fff !important;
+  height: 300px;
+  text-shadow: 4px 4px 8px #000;
+}
+
+.jumbotron h1 {
+  color: #fff;
+  font-size: 3.5rem;
+  text-shadow: 2px 2px 8px #000;
+  font-weight: 500;
 }
 
 .getting-started {
@@ -40,6 +52,15 @@ body {
 
 main {
   padding-bottom: 1rem;
+}
+
+.card {
+  margin-top: 1.4rem;
+}
+
+.card-header h1 {
+  margin: 0rem !important;
+  font-size: 1rem;
 }
 
 h1,

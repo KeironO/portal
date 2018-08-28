@@ -17,3 +17,8 @@ class MetadataGeneratorForm(FlaskForm):
     email = StringField("Correspondence Email", validators=[DataRequired(), Email()])
     max_length = IntegerField("Max Length", validators=[DataRequired(), NumberRange(min=1, max=2500)])
     submit = SubmitField("Submit")
+
+
+class SequenceSubmission(FlaskForm):
+    sequences = TextAreaField("Sequences", validators=[DataRequired()])
+    submit = SubmitField("Submit")

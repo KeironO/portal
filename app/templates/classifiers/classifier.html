@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}{{id}}{% endblock %}
+
+
+{% block jumbotron %}
+<div class="jumbotron heading">
+  <div class="container">
+  <h1>{{ id }}: {{info["uid"]}}{{info['name']}}</h1>
+  </div>
+</div>
+{% endblock %}
+
+{% block body %}
+
+<h2>Description</h2>
+
+<p>{{ info["description"]}}</p>
+
+{{ info }}
+
+<div class="row">
+  <div class="col-sm">
+    Author: {{ info["author name"]}}
+  </div>
+
+  <div class="col-sm">
+    Max Length: {{ info["max len"]}}
+  </div>
+
+  <div class="col-sm">
+    Ngrams: {{ info["ngrams"] }}
+  </div>
+</div>
+
+<h5>Please enter your sequences:</h5>
+
+<p>Supported types: FASTA</p>
+<form action="" method="POST" enctype="multipart/form-data">
+  {{ form.hidden_tag() }}
+{{ form.sequences }}
+
+{{ form.submit }}
+</form>
+
+{% endblock %}
