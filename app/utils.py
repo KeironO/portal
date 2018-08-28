@@ -1,7 +1,19 @@
 from flask import jsonify
+import json
+from Bio import SeqIO
+from io import StringIO
 
 class Seq2Vec(object):
-    pass
+    def __init__(self, sequences, id):
+        self.model_id = id
+        self.fasta2string(sequences)
+
+    def fasta2string(self, sequences):
+        fasta_io = StringIO(sequences)
+        records = SeqIO.parse(fasta_io, "fasta")
+        for i in records:
+            print(i.id)
+        fasta_io.close()
 
 
 class MetadataGenerator(object):
@@ -11,7 +23,9 @@ class MetadataGenerator(object):
         self.description = form.description.data
         self.ngrams = form.ngrams.data
         self.max_length = form.max_length.data
+        self.sequencing_system = form.sequencing_system.data
         self.author_name = form.author_name.data
+        self.paired = bool(form.paired.data)
         self.author_email = form.email.data
 
         self.final = {}
@@ -20,13 +34,15 @@ class MetadataGenerator(object):
 
     def generate(self):
         self.final = {
-            "name": self.name,
-            "description": self.description,
+            "Name": self.name,
+            "Description": self.description,
             "ngrams": int(self.ngrams),
-            "max len": int(self.max_length),
-            "author name": self.author_name,
-            "author email": self.author_email,
+            "Max Length": int(self.max_length),
+            "Paired": self.paired,
+            "Sequencing System": self.sequencing_system,
+            "Author Name": self.author_name,
+            "Author Email": self.author_email
         }
 
     def get_json(self):
-        return jsonify(results=self.final)
+        return jsonify(self.final)

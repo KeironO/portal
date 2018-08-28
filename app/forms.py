@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, SubmitField, SelectField, IntegerField, BooleanField
+from wtforms import StringField, TextAreaField, SubmitField, SelectField, IntegerField, BooleanField, RadioField
 from wtforms.validators import DataRequired, Email, NumberRange, Length
 
 
@@ -13,7 +13,7 @@ class MetadataGeneratorForm(FlaskForm):
     technology = SelectField("Technology", choices=[["16S", "16S"]], validators=[DataRequired()])
     sequencing_system = SelectField("Sequencing System", choices=[["MiSeqv3", "MiSeqv3"]], validators=[DataRequired()])
 
-    paired = BooleanField("Paired End?", validators=[DataRequired()])
+    paired = RadioField("Paired End?", choices=[["True", "True"], ["False", "False"]], validators=[DataRequired()])
 
     ngrams = SelectField("N-grams", choices=[["None", "0"], ["1", "1"], ["2", "2"], ["3", "3"],
                                              ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"],

@@ -84,6 +84,11 @@ label {
   color: #1e394c;
 }
 
+form {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
 nav a {
   color: #1e394c;
   font-weight: 500;

@@ -38,7 +38,7 @@ def classifier(id):
     classifier_info = classifiers_dict[id]
     form = forms.SequenceSubmission()
     if form.validate_on_submit():
-        print(form)
+        utils.Seq2Vec(form.sequences.data)
     return render_template("classifiers/classifier.html", id=id,
                            info=classifier_info, form=form)
 

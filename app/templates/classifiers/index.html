@@ -7,7 +7,6 @@
 <div class="jumbotron heading">
   <div class="container">
   <h1>Classifiers</h1>
-
   </div>
 </div>
 {% endblock %}
@@ -26,8 +25,8 @@
     {% for i in classifiers_dict %}
     <tr>
       <td><a href="{{ url_for('classifier', id=i)}}">{{ i }}</a></td>
-      <td>{{ classifiers_dict[i]["name"] }}</td>
-      <td>{{ classifiers_dict[i]["author name"]}}
+      <td>{{ classifiers_dict[i]["Name"] }}</td>
+      <td>{{ classifiers_dict[i]["Author Name"]}}
     </tr>
     {% endfor %}
   </tbody>

@@ -20,7 +20,7 @@
 {% block jumbotron %}
 <div class="jumbotron heading">
   <div class="container">
-  <h1>{{ id }}: {{info["uid"]}}{{info['name']}}</h1>
+  <h1>{{ id }}: {{info["uid"]}}{{info['Name']}}</h1>
   </div>
 </div>
 {% endblock %}
@@ -29,26 +29,26 @@
 
 <h2>Description</h2>
 
-<p>{{ info["description"]}}</p>
+<p>{{ info["Description"]}}</p>
 
 <div class="row">
   <div class="col-sm">
-    Author: {{ info["author name"]}}
+    Author: {{ info["Author Name"]}}
   </div>
 
   <div class="col-sm">
-    Max Length: {{ info["max len"]}}
+    Max Length: {{ info["Max Length"]}}
   </div>
 
   <div class="col-sm">
     Ngrams: {{ info["ngrams"] }}
   </div>
+
+  <div class="col-sm">
+    Paired: {{ info["Paired"] }}
+  </div>
 </div>
 
-<br>
-
 {{ render_classifier_form(form) }}
-
-<br>
 
 {% endblock %}
