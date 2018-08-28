@@ -33,7 +33,7 @@ def docs():
 def classifiers():
     return render_template("classifiers/index.html", classifiers_dict=classifiers_dict)
 
-@app.route("/classifiers/<id>")
+@app.route("/classifiers/<id>", methods=["GET", "POST"])
 def classifier(id):
     classifier_info = classifiers_dict[id]
     form = forms.SequenceSubmission()

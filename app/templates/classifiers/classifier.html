@@ -1,3 +1,17 @@
+{% macro render_classifier_form(form) %}
+<form action="" method="POST" enctype="multipart/form-data">
+  {{ form.hidden_tag() }}
+  <div class="form-group">
+    <label for="sequences">Please enter your sequences:</label>
+    <textarea class="form-control" id="sequences" name="sequences" rows="10" required></textarea>
+    <p class="muted">Supported types: FASTA</p>
+  </div>
+  <button type="submit" class="btn btn-primary float-right">Submit</button>
+</form>
+
+{% endmacro %}
+
+
 {% extends "base.html" %}
 
 {% block title %}{{id}}{% endblock %}
@@ -17,8 +31,6 @@
 
 <p>{{ info["description"]}}</p>
 
-{{ info }}
-
 <div class="row">
   <div class="col-sm">
     Author: {{ info["author name"]}}
@@ -33,14 +45,10 @@
   </div>
 </div>
 
-<h5>Please enter your sequences:</h5>
+<br>
 
-<p>Supported types: FASTA</p>
-<form action="" method="POST" enctype="multipart/form-data">
-  {{ form.hidden_tag() }}
-{{ form.sequences }}
+{{ render_classifier_form(form) }}
 
-{{ form.submit }}
-</form>
+<br>
 
 {% endblock %}
