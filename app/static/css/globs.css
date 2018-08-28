@@ -1,5 +1,3 @@
-/* Sticky footer styles
--------------------------------------------------- */
 html {
   position: relative;
   min-height: 100%;
@@ -13,8 +11,16 @@ body {
   line-height: 24px;
 }
 
+.jumbotron {
+}
+
 .jumbotron.heading {
   padding: 2rem;
+  background-color: #176294;
+}
+
+.jumbotron.heading h1 {
+  color: #fff !important;
 }
 
 .jumbotron.home {
@@ -51,6 +57,12 @@ p {
 label {
   font-weight: 400;
   color: #1e394c;
+}
+
+nav a {
+  color: #1e394c;
+  font-weight: 500;
+  margin: 0 1rem 0 0;
 }
 
 .footer {

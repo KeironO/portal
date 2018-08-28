@@ -6,12 +6,13 @@ class Seq2Vec(object):
 
 class MetadataGenerator(object):
     def __init__(self, form):
-        self.name = form.name
-        self.description = form.description
-        self.ngrams = form.ngrams
-        self.max_length = form.ngrams
-        self.author_name = form.author_name
-        self.author_email = form.email
+        self.uid = form.uid.data
+        self.name = form.name.data
+        self.description = form.description.data
+        self.ngrams = form.ngrams.data
+        self.max_length = form.ngrams.data
+        self.author_name = form.author_name.data
+        self.author_email = form.email.data
 
         self.final = {}
 
@@ -19,12 +20,12 @@ class MetadataGenerator(object):
 
     def generate(self):
         self.final = {
-            "name": self.name.data,
-            "description": self.description.data,
-            "ngrams": self.ngrams.data,
-            "max len": self.max_length.data,
-            "author name": self.author_name.data,
-            "author email": self.author_email.data,
+            "name": self.name,
+            "description": self.description,
+            "ngrams": int(self.ngrams),
+            "max len": int(self.max_length),
+            "author name": self.author_name,
+            "author email": self.author_email,
         }
 
     def get_json(self):

@@ -2,7 +2,7 @@ import os
 from flask import Flask
 from flask_bower import Bower
 from config import Config
-from flask import render_template, request
+from flask import render_template, request, make_response
 
 import forms
 
@@ -28,7 +28,9 @@ def contribute():
     form = forms.MetadataGeneratorForm(request.form)
     if form.validate_on_submit():
         metadata = utils.MetadataGenerator(form)
-        return metadata.get_json()
+        response = make_response(metadata.get_json())
+        response.headers["Content-Disposition"] = "attachment; filename=metadata.json"
+        return response
     return render_template("contribute.html", form=form)
 
 
