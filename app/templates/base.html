@@ -10,13 +10,7 @@
             {% if field.type == "StringField" %}
                 <input type="string" class="form-control" name="{{ field.name }}" placeholder="{{ placeholder }}" {% if value != None %}value="{{ value }}" {% endif %}>
             {% elif field.type == "SelectField" %}
-                <select class="form-control" name="{{ field.name}}">
-                  {% for choice in field.choices %}
-                    <option value="{{choice[1]}}">{{choice[0]}}</option>
-                  {% endfor %}
-                </select>
-            {% elif type =="checkbox" %}
-               <p>{{ field }} {{ label }}</p>
+                {{ field() }}
             {% elif field.type == "TextAreaField" %}
                 <textarea class="form-control" name="{{ field.name }}" placeholder="{{ placeholder }}"></textarea>
             {% elif field.type == "IntegerField" %}

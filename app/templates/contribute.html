@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Classifier{% endblock %}
+{% block title %}Contribute{% endblock %}
 
 {% block jumbotron %}
 <div class="jumbotron heading">
@@ -21,25 +21,34 @@
 
 <ol>
   <li>Generate a metadata file using the following tool.</li>
-
 </ol>
+
+<pre class="code">
+.
+├── DS2VTEST
+│   ├── metadata.json # .pMetadata Generator
+|   ├── model.
+|   ├── encoded_labels.json
+|   ├── encoded_values.json
+|   ├── training_data.fasta
+</pre>
 
 <h2>Metadata Generator</h2>
 
 <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed posuere et urna vel viverra. Sed in tellus at orci pretium laoreet vitae sed ligula. Etiam ullamcorper facilisis sollicitudin. Proin vestibulum finibus sem quis maximus. Vivamus finibus volutpat enim ac maximus. Vestibulum euismod elit sit amet dapibus convallis. Vestibulum posuere orci et justo bibendum mollis. Nunc dictum interdum massa, et venenatis ante porta id. In feugiat nulla est, at sollicitudin felis porta vitae. Ut porta gravida arcu, ut aliquet arcu. </p>
 
 
-<form action="" method="POST">
+<form action="" method="POST" enctype="multipart/form-data">
   {{ form.hidden_tag() }}
 
+  {{ render_form_field(form.uid)}}
   {{ render_form_field(form.name) }}
   {{ render_form_field(form.description) }}
   {{ render_form_field(form.ngrams) }}
   {{ render_form_field(form.max_length) }}
 
+  {{ render_form_field(form.author_name) }}
   {{ render_form_field(form.institution) }}
-
-  {{ render_form_field(form.author_names) }}
   {{ render_form_field(form.email) }}
 
   {{ form.submit() }}

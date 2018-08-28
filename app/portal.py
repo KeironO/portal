@@ -27,8 +27,8 @@ def classifiers():
 def contribute():
     form = forms.MetadataGeneratorForm(request.form)
     if form.validate_on_submit():
-        print(form)
-
+        metadata = utils.MetadataGenerator(form)
+        return metadata.get_json()
     return render_template("contribute.html", form=form)
 
 
