@@ -10,7 +10,7 @@ class MetadataGenerator(object):
         self.name = form.name.data
         self.description = form.description.data
         self.ngrams = form.ngrams.data
-        self.max_length = form.ngrams.data
+        self.max_length = form.max_length.data
         self.author_name = form.author_name.data
         self.author_email = form.email.data
 

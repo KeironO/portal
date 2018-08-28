@@ -3,15 +3,26 @@ from flask import Flask
 from flask_bower import Bower
 from config import Config
 from flask import render_template, request, make_response
-
 import forms
-
 import utils
+import json # TODO: Move to utils
+
+dirs = [x for x in os.listdir(Config.REPOSITORY_FP) if os.path.isdir(os.path.join(Config.REPOSITORY_FP, x)) and x != ".git"]
+
+classifiers_dict = {
+
+}
+
+for model in dirs:
+    dir_path = os.path.join(Config.REPOSITORY_FP, model)
+
+    with open(os.path.join(dir_path, "metadata.json"), "rb") as infile:
+        classifiers_dict[model] = json.load(infile)
+
 
 app = Flask(__name__)
 app.config.from_object(Config)
 Bower(app)
-
 
 @app.route("/docs")
 def docs():
@@ -20,8 +31,11 @@ def docs():
 
 @app.route("/classifiers")
 def classifiers():
-    return render_template("classifier.html")
+    return render_template("classifiers/index.html", classifiers_dict=classifiers_dict)
 
+@app.route("/classifiers/<id>")
+def classifier(id):
+    return render_template("classifiiers/classifier.html")
 
 @app.route("/contribute", methods=["GET", "POST"])
 def contribute():
@@ -32,7 +46,6 @@ def contribute():
         response.headers["Content-Disposition"] = "attachment; filename=metadata.json"
         return response
     return render_template("contribute.html", form=form)
-
 
 @app.route("/")
 def index():

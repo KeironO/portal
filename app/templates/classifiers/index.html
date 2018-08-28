@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Classifier{% endblock %}
+
+
+{% block jumbotron %}
+<div class="jumbotron heading">
+  <div class="container">
+  <h1>Classifiers</h1>
+
+  </div>
+</div>
+{% endblock %}
+
+{% block body %}
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Contributor</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for i in classifiers_dict %}
+    <tr>
+      <td><a href="#">{{ i }}</a></td>
+      <td>{{ classifiers_dict[i]["name"] }}</td>
+      <td>{{ classifiers_dict[i]["author name"]}}
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+
+{% endblock %}

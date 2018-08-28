@@ -15,12 +15,14 @@ body {
 }
 
 .jumbotron.heading {
-  padding: 2rem;
+  padding: 3rem;
   background-color: #176294;
 }
 
 .jumbotron.heading h1 {
   color: #fff !important;
+  margin-top: inherit !important;
+  margin-bottom: inherit !important;
 }
 
 .jumbotron.home {
@@ -48,6 +50,8 @@ h5 {
   color: #1e394c;
   line-height: 1.1;
   font-weight: 400;
+  margin-top: 2rem;
+  margin-bottom: 1.5rem;
 }
 
 p {
