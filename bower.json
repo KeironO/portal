@@ -6,7 +6,7 @@
   ],
   "description": "A web interface for the DeepSeq2Vec project",
   "main": "",
-  "license": "MIT",
+  "license": "GPLv2",
   "ignore": [
     "**/.*",
     "node_modules",
@@ -14,4 +14,5 @@
     "test",
     "tests"
   ]
+ "directory": ".app/static/bower_components"
 }
