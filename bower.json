@@ -14,7 +14,6 @@
     "test",
     "tests"
   ],
-  "directory": ".app/static/bower_components",
   "dependencies": {
     "bootstrap": "^4.1.3"
   }
