@@ -1,0 +1,17 @@
+{
+  "name": "DeepSeq2VecPortal",
+  "homepage": "https://github.com/KeironO/portal",
+  "authors": [
+    "KeironO <keiron.oshea@gmail.com>"
+  ],
+  "description": "A web interface for the DeepSeq2Vec project",
+  "main": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
