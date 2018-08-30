@@ -2,7 +2,7 @@
 <form action="" method="POST" enctype="multipart/form-data">
     {{ form.hidden_tag() }}
     <div class="alert alert-warning">
-        Due to current infrastructure limitations, you can only enter a maximum of 1,000 sequences.
+        <b>Alert:</b> Due to current infrastructure limitations, you can only enter a maximum of 1,000 sequences.
     </div>
     <div class="form-group">
         <label for="sequences">Please enter your sequences:</label>
@@ -45,7 +45,7 @@
             Author: {{ info["Author Name"]}}
           </div>
           <div class="col-sm">
-            
+
           </div>
           <div class="col-sm">
             <button class="btn btn-success btn-sm float-right">Training Data</button>

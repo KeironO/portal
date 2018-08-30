@@ -92,6 +92,15 @@ class ClassifierPredictor(object):
 
 
     def decode_predictions(self):
+
+        def _decode(i):
+            value_predictions = []
+            for prob in zip(*i):
+                for indx, i in enumerate(prob):
+                    # TODO: THIS IS REALLY BAD !!
+                    temp = dict((v,k) for k,v in label_dict[str(indx)].items())
+                    value_predictions.append([temp[i.argmax(axis=-1)], max(i)])
+            return value_predictions
         labels_fp = os.path.join(Config.REPO_DIR, self.model_id, "encoded_labels.json")
 
         with open(labels_fp, "rb") as infile:
@@ -100,16 +109,13 @@ class ClassifierPredictor(object):
 
         predictions_with_scores = []
 
-        print(self.probabilities)
 
-        for prob in zip(*self.probabilities):
-            value_predictions = []
+        if len([self.probabilities]) == 1:
+            predictions_with_scores.append(_decode(self.probabilities))
 
-            for indx, i in enumerate(prob):
-                # TODO: THIS IS REALLY BAD !!
-                temp = dict((v,k) for k,v in label_dict[str(indx)].items())
-                value_predictions.append([temp[i.argmax(axis=-1)], max(i)])
-            predictions_with_scores.append(value_predictions)
+        else:
+            for i in self.probabilities:
+                predictions_with_scores.append(_decode(i))
 
         self.predictions_with_scores = predictions_with_scores
 
