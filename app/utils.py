@@ -8,6 +8,7 @@ from nltk import ngrams as apply_ngram
 from config import Config
 from keras.models import load_model
 from keras.preprocessing.sequence import pad_sequences
+from keras import backend as K
 
 class RepoController(object):
     def __init__(self, repo_url, repo_dir):
@@ -82,16 +83,37 @@ class Seq2Vec(object):
 class ClassifierPredictor(object):
     def __init__(self, id):
         self.model_id = id
+        self.probabilities = []
         self.get_model()
 
     def get_model(self):
         model_fp =os.path.join(Config.REPO_DIR, self.model_id, "model.h5")
         self.model = load_model(model_fp)
 
+
+    def decode_predictions(self):
+        labels_fp = os.path.join(Config.REPO_DIR, self.model_id, "encoded_labels.json")
+
+        with open(labels_fp, "rb") as infile:
+            label_dict = json.load(infile)
+
+
+        predictions_with_scores = []
+        for prob in zip(*self.probabilities):
+            value_predictions = []
+
+            for indx, i in enumerate(prob):
+                # TODO: THIS IS REALLY BAD !!
+                temp = dict((v,k) for k,v in label_dict[str(indx)].items())
+                value_predictions.append([temp[i.argmax(axis=-1)], max(i)])
+            predictions_with_scores.append(value_predictions)
+
+        self.predictions_with_scores = predictions_with_scores
+
+
     def predict(self, s2v):
-        predictions = []
-        for i in s2v.sequences:
-            print(self.model.predict(i))
+        self.probabilities = self.model.predict(s2v.sequences)
+        K.clear_session()
 
 class MetadataGenerator(object):
     def __init__(self, form):

@@ -2,7 +2,7 @@ import os
 from flask import Flask
 from flask_bower import Bower
 from config import Config
-from flask import render_template, request, make_response, abort
+from flask import render_template, request, make_response, abort, redirect, url_for, session
 import forms
 import utils
 
@@ -24,6 +24,8 @@ def classifiers():
     return render_template("classifiers/index.html", classifiers=
                            classifiers_dict)
 
+
+
 @app.route("/classifiers/<id>", methods=["GET", "POST"])
 def classifier(id):
     try:
@@ -37,8 +39,15 @@ def classifier(id):
                             classifier_info["Max Length"])
         clf = utils.ClassifierPredictor(id)
         clf.predict(vec)
+        clf.decode_predictions()
+
+        out_length = max([len(x) for x in clf.predictions_with_scores])
+        results = zip(*vec.identifiers, clf.predictions_with_scores)
+
+        return render_template("classifiers/results.html", results=results, out_length=out_length)
     return render_template("classifiers/classifier.html", id=id,
                            info=classifier_info, form=form)
+
 
 @app.route("/contribute", methods=["GET", "POST"])
 def contribute():
