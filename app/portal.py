@@ -5,25 +5,10 @@ from config import Config
 from flask import render_template, request, make_response
 import forms
 import utils
-import json # TODO: Move to utils
 
 repo = utils.RepoController(Config.REPO_URL, Config.REPO_DIR)
 
-exit(0)
-
-'''
-dirs = [x for x in os.listdir(Config.REPOSITORY_FP) if os.path.isdir(os.path.join(Config.REPOSITORY_FP, x)) and x != ".git"]
-
-classifiers_dict = {
-
-}
-
-for model in dirs:
-    dir_path = os.path.join(Config.REPOSITORY_FP, model)
-
-    with open(os.path.join(dir_path, "metadata.json"), "rb") as infile:
-        classifiers_dict[model] = json.load(infile)
-'''
+classifiers_dict = repo.get_structure()
 
 app = Flask(__name__)
 app.config.from_object(Config)

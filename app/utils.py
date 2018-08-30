@@ -15,7 +15,6 @@ class RepoController(object):
         else:
             self.pull_repo()
 
-
     def clone_repo(self):
         git.Repo.clone_from(self.repo_url, self.repo_dir)
 
@@ -23,6 +22,18 @@ class RepoController(object):
         repo = git.cmd.Git(self.repo_dir)
         repo.pull()
 
+    def get_structure(self):
+
+        dirs = [x for x in os.listdir(self.repo_dir) if os.path.isdir(os.path.join(self.repo_dir, x)) and x != ".git"]
+
+        classifiers_dict = {}
+
+        for model in dirs:
+            dir_path = os.path.join(Config.REPOSITORY_FP, model)
+
+            with open(os.path.join(dir_path, "metadata.json"), "rb") as infile:
+                classifiers_dict[model] = json.load(infile)
+        return classifiers_dict
 
 class Seq2Vec(object):
     def __init__(self, sequences, id):
