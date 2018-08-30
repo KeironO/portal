@@ -42,8 +42,7 @@ def classifier(id):
         clf.decode_predictions()
 
         out_length = max([len(x) for x in clf.predictions_with_scores])
-        results = zip(*vec.identifiers, clf.predictions_with_scores)
-
+        results = zip([*vec.identifiers], clf.predictions_with_scores)
         return render_template("classifiers/results.html", results=results, out_length=out_length)
     return render_template("classifiers/classifier.html", id=id,
                            info=classifier_info, form=form)

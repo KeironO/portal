@@ -71,7 +71,7 @@ class Seq2Vec(object):
         seqs = []
 
         for indx, seq in enumerate(reads):
-            identifiers.append(seq.id)
+            identifiers.append(seq.name)
             seqs.append(str(seq.seq))
             if indx >= 1000:
                 break
@@ -99,6 +99,9 @@ class ClassifierPredictor(object):
 
 
         predictions_with_scores = []
+
+        print(self.probabilities)
+
         for prob in zip(*self.probabilities):
             value_predictions = []
 
@@ -112,7 +115,12 @@ class ClassifierPredictor(object):
 
 
     def predict(self, s2v):
-        self.probabilities = self.model.predict(s2v.sequences)
+        import numpy as np
+        if len(s2v.sequences) > 1 :
+            for seq in s2v.sequences:
+                self.probabilities.append(self.model.predict(seq))
+        else:
+            self.probabilities = self.model.predict(s2v.sequences)
         K.clear_session()
 
 class MetadataGenerator(object):
