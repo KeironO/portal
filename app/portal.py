@@ -35,7 +35,8 @@ def classifier(id):
         vec = utils.Seq2Vec(form.sequences.data, id,
                             classifier_info["ngrams"],
                             classifier_info["Max Length"])
-        
+        clf = utils.ClassifierPredictor(id)
+        clf.predict(vec)
     return render_template("classifiers/classifier.html", id=id,
                            info=classifier_info, form=form)
 

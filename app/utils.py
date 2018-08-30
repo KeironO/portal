@@ -6,6 +6,8 @@ import os
 import git
 from nltk import ngrams as apply_ngram
 from config import Config
+from keras.models import load_model
+from keras.preprocessing.sequence import pad_sequences
 
 class RepoController(object):
     def __init__(self, repo_url, repo_dir):
@@ -57,7 +59,7 @@ class Seq2Vec(object):
             encoding_dict = json.load(infile)
         sequences = []
         for seq in self.sequences:
-            sequences.append([encoding_dict[x] for x in seq])
+            sequences.append(pad_sequences([[encoding_dict[x] for x in seq]], maxlen=self.max_len))
         return sequences
 
     def fasta2string(self, sequences):
@@ -78,8 +80,18 @@ class Seq2Vec(object):
 
 
 class ClassifierPredictor(object):
-    def __init__(self):
-        pass
+    def __init__(self, id):
+        self.model_id = id
+        self.get_model()
+
+    def get_model(self):
+        model_fp =os.path.join(Config.REPO_DIR, self.model_id, "model.h5")
+        self.model = load_model(model_fp)
+
+    def predict(self, s2v):
+        predictions = []
+        for i in s2v.sequences:
+            print(self.model.predict(i))
 
 class MetadataGenerator(object):
     def __init__(self, form):
