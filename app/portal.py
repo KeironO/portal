@@ -2,7 +2,7 @@ import os
 from flask import Flask
 from flask_bower import Bower
 from config import Config
-from flask import render_template, request, make_response
+from flask import render_template, request, make_response, abort
 import forms
 import utils
 
@@ -16,8 +16,7 @@ Bower(app)
 
 @app.route("/docs")
 def docs():
-    return "Help page goes here."
-
+    return render_template("docs.html")
 
 @app.route("/classifiers")
 def classifiers():
@@ -25,10 +24,13 @@ def classifiers():
 
 @app.route("/classifiers/<id>", methods=["GET", "POST"])
 def classifier(id):
-    classifier_info = classifiers_dict[id]
+    try:
+        classifier_info = classifiers_dict[id]
+    except KeyError:
+        return abort(404)
     form = forms.SequenceSubmission()
     if form.validate_on_submit():
-        utils.Seq2Vec(form.sequences.data)
+        utils.Seq2Vec(form.sequences.data, id)
     return render_template("classifiers/classifier.html", id=id,
                            info=classifier_info, form=form)
 

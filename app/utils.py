@@ -29,7 +29,7 @@ class RepoController(object):
         classifiers_dict = {}
 
         for model in dirs:
-            dir_path = os.path.join(Config.REPOSITORY_FP, model)
+            dir_path = os.path.join(self.repo_dir, model)
 
             with open(os.path.join(dir_path, "metadata.json"), "rb") as infile:
                 classifiers_dict[model] = json.load(infile)
@@ -38,14 +38,25 @@ class RepoController(object):
 class Seq2Vec(object):
     def __init__(self, sequences, id):
         self.model_id = id
-        self.fasta2string(sequences)
+        self.identifiers, self.sequences = self.fasta2string(sequences)
+
+        print(self.identifiers)
 
     def fasta2string(self, sequences):
         fasta_io = StringIO(sequences)
-        sequences = SeqIO.parse(fasta_io, "fasta")
-        for seq in sequences:
-            print(seq.id)
+        reads = SeqIO.parse(fasta_io, "fasta")
+
+        identifiers = []
+        seqs = []
+
+        for indx, seq in enumerate(reads):
+            identifiers.append(seq.id)
+            seqs.append(seq.seq)
+            if indx >= 1000:
+                break
         fasta_io.close()
+
+        return identifiers, seqs
 
 
 class MetadataGenerator(object):
