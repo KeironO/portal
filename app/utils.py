@@ -4,6 +4,8 @@ from Bio import SeqIO
 from io import StringIO
 import os
 import git
+from nltk import ngrams as apply_ngram
+from config import Config
 
 class RepoController(object):
     def __init__(self, repo_url, repo_dir):
@@ -23,24 +25,40 @@ class RepoController(object):
         repo.pull()
 
     def get_structure(self):
-
         dirs = [x for x in os.listdir(self.repo_dir) if os.path.isdir(os.path.join(self.repo_dir, x)) and x != ".git"]
-
         classifiers_dict = {}
-
         for model in dirs:
             dir_path = os.path.join(self.repo_dir, model)
-
             with open(os.path.join(dir_path, "metadata.json"), "rb") as infile:
                 classifiers_dict[model] = json.load(infile)
         return classifiers_dict
 
 class Seq2Vec(object):
-    def __init__(self, sequences, id):
+    def __init__(self, sequences, id, ngrams, max_len):
         self.model_id = id
+        self.max_len = max_len
+        self.ngrams = ngrams
         self.identifiers, self.sequences = self.fasta2string(sequences)
 
-        print(self.identifiers)
+        self.sequences = self.ngram()
+        self.sequences = self.vectorise()
+
+
+    def ngram(self):
+        sequences = []
+
+        for seq in self.sequences:
+            sequences.append(["".join(x) for x in apply_ngram(seq, self.ngrams)])
+
+        return sequences
+
+    def vectorise(self):
+        with open(os.path.join(Config.REPO_DIR, self.model_id + "/encoded_values.json"), "rb") as infile:
+            encoding_dict = json.load(infile)
+        sequences = []
+        for seq in self.sequences:
+            sequences.append([encoding_dict[x] for x in seq])
+        return sequences
 
     def fasta2string(self, sequences):
         fasta_io = StringIO(sequences)
@@ -51,13 +69,17 @@ class Seq2Vec(object):
 
         for indx, seq in enumerate(reads):
             identifiers.append(seq.id)
-            seqs.append(seq.seq)
+            seqs.append(str(seq.seq))
             if indx >= 1000:
                 break
         fasta_io.close()
 
         return identifiers, seqs
 
+
+class ClassifierPredictor(object):
+    def __init__(self):
+        pass
 
 class MetadataGenerator(object):
     def __init__(self, form):

@@ -32,7 +32,10 @@ def classifier(id):
         return abort(404)
     form = forms.SequenceSubmission()
     if form.validate_on_submit():
-        utils.Seq2Vec(form.sequences.data, id)
+        vec = utils.Seq2Vec(form.sequences.data, id,
+                            classifier_info["ngrams"],
+                            classifier_info["Max Length"])
+        
     return render_template("classifiers/classifier.html", id=id,
                            info=classifier_info, form=form)
 
