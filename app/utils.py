@@ -2,6 +2,27 @@ from flask import jsonify
 import json
 from Bio import SeqIO
 from io import StringIO
+import os
+import git
+
+class RepoController(object):
+    def __init__(self, repo_url, repo_dir):
+        self.repo_url = repo_url
+        self.repo_dir = repo_dir
+
+        if os.path.isdir(self.repo_dir) is False:
+            self.clone_repo()
+        else:
+            self.pull_repo()
+
+
+    def clone_repo(self):
+        git.Repo.clone_from(self.repo_url, self.repo_dir)
+
+    def pull_repo(self):
+        repo = git.cmd.Git(self.repo_dir)
+        repo.pull()
+
 
 class Seq2Vec(object):
     def __init__(self, sequences, id):
