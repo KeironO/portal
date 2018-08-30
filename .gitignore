@@ -103,6 +103,9 @@ venv.bak/
 # Bower stuff
 app/bower_components
 
+# Repository stuff
+app/
+
 # mypy
 .mypy_cache/
 
