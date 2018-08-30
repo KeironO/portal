@@ -34,6 +34,21 @@ body {
   text-shadow: 4px 4px 8px #000;
 }
 
+.full-width {
+  width: 100%;
+}
+
+.classifier {
+  background-color: #f8f8f8;
+  padding: 1rem;
+}
+
+.classifier h1 {
+  text-align: center;
+  font-size: 1.5rem;
+  margin: 0.5rem;
+}
+
 .jumbotron h1 {
   color: #fff;
   font-size: 3.5rem;
@@ -55,7 +70,7 @@ main {
 }
 
 .card {
-  margin-top: 1.4rem;
+  margin: 1.4rem;
 }
 
 .card-header h1 {

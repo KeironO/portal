@@ -13,24 +13,25 @@
 
 {% block body %}
 
-<table class="table">
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Name</th>
-      <th>Contributor</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for i in classifiers_dict %}
-    <tr>
-      <td><a href="{{ url_for('classifier', id=i)}}">{{ i }}</a></td>
-      <td>{{ classifiers_dict[i]["Name"] }}</td>
-      <td>{{ classifiers_dict[i]["Author Name"]}}
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
-
+<div class="row">
+{% for c in classifiers %}
+  <div class="col-md-4 classifier">
+      <h1>{{classifiers[c]["Name"]}}</h1>
+      <p>{{ classifiers[c]["Description"]}}</p>
+      <div class="row">
+        <div class="col-md-6">
+          <p><b>Tech:</b> {{ classifiers[c]["Sequencing System"]}}</p>
+        </div>
+        <div class="col-md-6">
+          <p><b>Author:</b> {{ classifiers[c]["Author Name"]}}</p>
+        </div>
+      </div>
+      <a href="{{ url_for('classifier', id=c)}}">
+        <div class="btn btn-primary full-width">
+          Go
+        </div>
+      </a>
+  </div>
+{% endfor %}
 
 {% endblock %}

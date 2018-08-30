@@ -6,8 +6,8 @@ from flask import render_template, request, make_response, abort
 import forms
 import utils
 
-repo = utils.RepoController(Config.REPO_URL, Config.REPO_DIR)
 
+repo = utils.RepoController(Config.REPO_URL, Config.REPO_DIR)
 classifiers_dict = repo.get_structure()
 
 app = Flask(__name__)
@@ -20,7 +20,9 @@ def docs():
 
 @app.route("/classifiers")
 def classifiers():
-    return render_template("classifiers/index.html", classifiers_dict=classifiers_dict)
+
+    return render_template("classifiers/index.html", classifiers=
+                           classifiers_dict)
 
 @app.route("/classifiers/<id>", methods=["GET", "POST"])
 def classifier(id):
