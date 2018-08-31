@@ -33,6 +33,9 @@ def classifier(id):
     except KeyError:
         return abort(404)
     form = forms.SequenceSubmission()
+
+    download_url = Config.REPO_URL + "/blob/master/"+ id + "/training_file.fasta?raw=true"
+
     if form.validate_on_submit():
         vec = utils.Seq2Vec(form.sequences.data, id,
                             classifier_info["ngrams"],
@@ -45,7 +48,8 @@ def classifier(id):
         results = zip([*vec.identifiers], clf.predictions_with_scores)
         return render_template("classifiers/results.html", results=results, out_length=out_length)
     return render_template("classifiers/classifier.html", id=id,
-                           info=classifier_info, form=form)
+                           info=classifier_info, form=form,
+                           download_url=download_url)
 
 
 @app.route("/contribute", methods=["GET", "POST"])

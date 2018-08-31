@@ -13,15 +13,14 @@
 
 {% block body %}
 
-
 <div class="card-deck">
   {% for c in classifiers %}
     <div class="card">
-      <div class="card-img-top">
+      <div class="card-header bg-danger card-classifier-heading">{{ classifiers[c]["Gene"]}}</div>
       <div class="card-body">
-        <h5 class="card-title">{{ classifiers[c]["Name"]}}</h5>
+        <div class="card-title">{{ classifiers[c]["Name"]}}</div>
         <p class="card-text">{{ classifiers[c]["Description"]}}</p>
-        <p class="card-text"><small class="text-muted">Author: {{ classifiers[c]["Author Name"]}}</small></p>
+        <p class="card-text"><small class="text-muted">Author: {{ classifiers[c]["Author Name"]}} // Sequencing System: {{ classifiers[c]["Sequencing System"]}}</small></p>
         <a href="{{ url_for('classifier', id=c)}}">
           <div class="btn btn-primary full-width">
             Go

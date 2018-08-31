@@ -96,8 +96,12 @@ class ClassifierPredictor(object):
 
         def _decode(i):
             value_predictions = []
-            for indx, prob in enumerate(i):
-                value_predictions.append([label_dict[str(indx)][prob.argmax(axis=-1)[0]], np.max(prob)])
+            for indx, prob in enumerate(i):#
+                try:
+                    value_predictions.append([label_dict[str(indx)][prob.argmax(axis=-1)[0]], np.max(prob)])
+                except IndexError:
+                    #print(prob.argmax(axis=-1), indx, len(i))
+                    pass
             return value_predictions
 
 
@@ -112,16 +116,14 @@ class ClassifierPredictor(object):
 
         predictions_with_scores = []
 
-        if len(self.probabilities) == 1:
-            predictions_with_scores.append(_decode(self.probabilities))
-        else:
-            for prediction in self.probabilities:
-                predictions_with_scores.append(_decode(prediction))
+        for prediction in self.probabilities:
+            predictions_with_scores.append(_decode(prediction))
+
         self.predictions_with_scores = predictions_with_scores
 
 
     def predict(self, s2v):
-        if len(s2v.sequences) > 1 :
+        if len(s2v.sequences) > 0 :
             for seq in s2v.sequences:
                 self.probabilities.append(self.model.predict(seq))
         else:
