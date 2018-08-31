@@ -13,25 +13,23 @@
 
 {% block body %}
 
-<div class="row">
-{% for c in classifiers %}
-  <div class="col-md-4 classifier">
-      <h1>{{classifiers[c]["Name"]}}</h1>
-      <p>{{ classifiers[c]["Description"]}}</p>
-      <div class="row">
-        <div class="col-md-6">
-          <p><b>Tech:</b> {{ classifiers[c]["Sequencing System"]}}</p>
-        </div>
-        <div class="col-md-6">
-          <p><b>Author:</b> {{ classifiers[c]["Author Name"]}}</p>
-        </div>
+
+<div class="card-deck">
+  {% for c in classifiers %}
+    <div class="card">
+      <div class="card-img-top">
+      <div class="card-body">
+        <h5 class="card-title">{{ classifiers[c]["Name"]}}</h5>
+        <p class="card-text">{{ classifiers[c]["Description"]}}</p>
+        <p class="card-text"><small class="text-muted">Author: {{ classifiers[c]["Author Name"]}}</small></p>
+        <a href="{{ url_for('classifier', id=c)}}">
+          <div class="btn btn-primary full-width">
+            Go
+          </div>
+        </a>
       </div>
-      <a href="{{ url_for('classifier', id=c)}}">
-        <div class="btn btn-primary full-width">
-          Go
-        </div>
-      </a>
-  </div>
-{% endfor %}
+    </div>
+  {% endfor %}
+</div>
 
 {% endblock %}
