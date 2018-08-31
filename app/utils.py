@@ -4,6 +4,7 @@ from Bio import SeqIO
 from io import StringIO
 import os
 import git
+import numpy as np
 from nltk import ngrams as apply_ngram
 from config import Config
 from keras.models import load_model
@@ -95,33 +96,31 @@ class ClassifierPredictor(object):
 
         def _decode(i):
             value_predictions = []
-            for prob in zip(*i):
-                for indx, i in enumerate(prob):
-                    # TODO: THIS IS REALLY BAD !!
-                    temp = dict((v,k) for k,v in label_dict[str(indx)].items())
-                    value_predictions.append([temp[i.argmax(axis=-1)], max(i)])
+            for indx, prob in enumerate(i):
+                value_predictions.append([label_dict[str(indx)][prob.argmax(axis=-1)[0]], np.max(prob)])
             return value_predictions
+
+
         labels_fp = os.path.join(Config.REPO_DIR, self.model_id, "encoded_labels.json")
 
         with open(labels_fp, "rb") as infile:
             label_dict = json.load(infile)
 
+        for key, values in label_dict.items():
+            temp = dict((v,k) for k,v in values.items())
+            label_dict[key] = temp
 
         predictions_with_scores = []
 
-
-        if len([self.probabilities]) == 1:
+        if len(self.probabilities) == 1:
             predictions_with_scores.append(_decode(self.probabilities))
-
         else:
-            for i in self.probabilities:
-                predictions_with_scores.append(_decode(i))
-
+            for prediction in self.probabilities:
+                predictions_with_scores.append(_decode(prediction))
         self.predictions_with_scores = predictions_with_scores
 
 
     def predict(self, s2v):
-        import numpy as np
         if len(s2v.sequences) > 1 :
             for seq in s2v.sequences:
                 self.probabilities.append(self.model.predict(seq))
