@@ -77,7 +77,11 @@ class ClassifierPredictor(object):
 
     def get_model(self):
         model_fp =os.path.join(Config.REPO_DIR, self.model_id, "model.h5")
-        self.model = load_model(model_fp)
+        try:
+            self.model = load_model(model_fp)
+        except TypeError:
+            K.clear_session()
+            self.get_model()
 
 
     def decode_predictions(self):
