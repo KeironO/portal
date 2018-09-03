@@ -60,11 +60,18 @@ def classifier(model_id):
 
 @app.route("/classifiers/<model_id>/results", methods=["GET"])
 def results(model_id):
+    return render_template("classifiers/results.html")
+
+@app.route("/classifiers/<model_id>/results/get", methods=["GET"])
+def results_getter(model_id):
     response = requests.post(session["api_url"], json=session["payload"])
     if response.status_code == 200:
-        return render_template("classifiers/results.html", results=response.json())
+        parser = {"_items" : []}
+        for key, values in response.json().items():
+            parser["_items"].append({"seq_id":key, "predictions" : values})
+        return jsonify(parser)
     else:
-        return abort(404)
+        abort(500)
 
 @app.route("/classifiers/<model_id>/api/", methods=["POST"])
 def api(model_id):

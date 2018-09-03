@@ -50,6 +50,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <title>{% block title %}{% endblock %} : DeepSeq2Tax</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('bower.static', filename='bootstrap/dist/css/bootstrap.min.css') }}">
+    {% block css %}{% endblock %}
  <link href="{{ url_for('static', filename='css/globs.css') }}" rel="stylesheet">
 </head>
 
@@ -100,6 +101,8 @@
 
 <script src="{{ url_for('bower.static', filename='jquery/dist/jquery.min.js') }}"></script>
 <script src="{{ url_for('bower.static', filename='bootstrap/dist/js/bootstrap.min.js') }}"></script>
+
+{% block javascript %} {%endblock%}
 
 </body>
 
