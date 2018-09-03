@@ -5,6 +5,7 @@ from collections import OrderedDict
 from config import Config
 import json
 from flask import render_template, request, make_response, abort, redirect, url_for, session, jsonify
+from flask.views import MethodView
 import forms
 import utils
 import requests
@@ -37,18 +38,24 @@ def classifier(model_id):
 
     if form.validate_on_submit():
         payload = utils.Fasta2Dict(form.sequences.data).payload
-        response = requests.post(request.url + "/api", json=payload)
-        if response.status_code == 200:
-            results = response.json()
-
-
+        session["payload"] = payload
+        session["api_url"] = request.url + "/api/"
+        return redirect(url_for("results", model_id=model_id))
 
     return render_template("classifiers/classifier.html", model_id=model_id,
                            info=classifier_info, form=form,
                            download_url=download_url)
 
 
-@app.route("/classifiers/<model_id>/api", methods=["POST"])
+@app.route("/classifiers/<model_id>/results", methods=["GET"])
+def results(model_id):
+    response = requests.post(session["api_url"], json=session["payload"])
+    if response.status_code == 200:
+        return render_template("classifiers/results.html", results=response.json())
+    else:
+        return abort(404)
+
+@app.route("/classifiers/<model_id>/api/", methods=["POST"])
 def api(model_id):
     if request.method == "POST":
         try:
@@ -63,7 +70,7 @@ def api(model_id):
 
         results = {}
         for index, seq_id in enumerate(vec.identifiers):
-            results[seq_id] = OrderedDict(clf.predictions_with_scores[index])
+            results[seq_id] = clf.predictions_with_scores[index]
 
         response = app.response_class(
             response=json.dumps(results),
