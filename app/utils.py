@@ -38,11 +38,13 @@ class RepoController(object):
         return classifiers_dict
 
 class Seq2Vec(object):
-    def __init__(self, sequences, id, ngrams, max_len):
+    def __init__(self, payload, id, ngrams, max_len, limit=1000):
         self.model_id = id
         self.max_len = max_len
         self.ngrams = ngrams
-        self.identifiers, self.sequences = self.fasta2string(sequences)
+
+        self.identifiers = list(payload.keys())[0:limit]
+        self.sequences = list(payload.values())[0:limit]
 
         self.sequences = self.ngram()
         self.sequences = self.vectorise()
@@ -63,6 +65,7 @@ class Seq2Vec(object):
         for seq in self.sequences:
             sequences.append(pad_sequences([[encoding_dict[x] for x in seq]], maxlen=self.max_len))
         return sequences
+
 
     def fasta2string(self, sequences):
         fasta_io = StringIO(sequences)
@@ -98,7 +101,7 @@ class ClassifierPredictor(object):
             value_predictions = []
             for indx, prob in enumerate(i):#
                 try:
-                    value_predictions.append([label_dict[str(indx)][prob.argmax(axis=-1)[0]], np.max(prob)])
+                    value_predictions.append([label_dict[str(indx)][prob.argmax(axis=-1)[0]], float(np.max(prob))])
                 except IndexError:
                     #print(prob.argmax(axis=-1), indx, len(i))
                     pass
