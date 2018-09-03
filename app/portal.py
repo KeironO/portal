@@ -36,6 +36,17 @@ def classifier(model_id):
 
     download_url = Config.REPO_URL + "/blob/master/"+ model_id + "/training_file.fasta?raw=true"
 
+
+    """
+        1. Convert FASTA2DICT stuff into a session.
+        2. Load Results
+        3. Make another method to do the prediction from the session and
+           return the results
+        4. Render results page in its entirety.
+        5. ???
+        6. Profit
+    """
+
     if form.validate_on_submit():
         payload = utils.Fasta2Dict(form.sequences.data).payload
         session["payload"] = payload
