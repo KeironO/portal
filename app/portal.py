@@ -7,7 +7,7 @@ import json
 from flask import render_template, request, make_response, abort, redirect, url_for, session, jsonify
 import forms
 import utils
-
+import requests
 
 repo = utils.RepoController(Config.REPO_URL, Config.REPO_DIR)
 classifiers_dict = repo.get_structure()
@@ -22,46 +22,39 @@ def docs():
 
 @app.route("/classifiers")
 def classifiers():
-
     return render_template("classifiers/index.html", classifiers=
                            classifiers_dict)
 
-
-
-@app.route("/classifiers/<id>", methods=["GET", "POST"])
-def classifier(id):
-    try:
-        classifier_info = classifiers_dict[id]
-    except KeyError:
-        return abort(404)
-    form = forms.SequenceSubmission()
-
-    download_url = Config.REPO_URL + "/blob/master/"+ id + "/training_file.fasta?raw=true"
-
-    if form.validate_on_submit():
-        vec = utils.Seq2Vec(form.sequences.data, id,
-                            classifier_info["ngrams"],
-                            classifier_info["Max Length"])
-        clf = utils.ClassifierPredictor(id)
-        clf.predict(vec)
-        clf.decode_predictions()
-
-        out_length = max([len(x) for x in clf.predictions_with_scores])
-        results = zip([*vec.identifiers], clf.predictions_with_scores)
-        return render_template("classifiers/results.html", results=results, out_length=out_length)
-    return render_template("classifiers/classifier.html", id=id,
-                           info=classifier_info, form=form,
-                           download_url=download_url)
-
-
-@app.route("/classifiers/<model_id>/api/", methods=["POST"])
-def classifier_api(model_id):
+@app.route("/classifiers/<model_id>", methods=["GET", "POST"])
+def classifier(model_id):
     try:
         classifier_info = classifiers_dict[model_id]
     except KeyError:
         return abort(404)
+    form = forms.SequenceSubmission()
 
+    download_url = Config.REPO_URL + "/blob/master/"+ model_id + "/training_file.fasta?raw=true"
+
+    if form.validate_on_submit():
+        payload = utils.Fasta2Dict(form.sequences.data).payload
+        response = requests.post(request.url + "/api", json=payload)
+        if response.status_code == 200:
+            results = response.json()
+
+
+
+    return render_template("classifiers/classifier.html", model_id=model_id,
+                           info=classifier_info, form=form,
+                           download_url=download_url)
+
+
+@app.route("/classifiers/<model_id>/api", methods=["POST"])
+def api(model_id):
     if request.method == "POST":
+        try:
+            classifier_info = classifiers_dict[model_id]
+        except KeyError:
+            return abort(404)
         payload = request.get_json()
         vec = utils.Seq2Vec(payload, model_id, classifier_info["ngrams"], classifier_info["Max Length"])
         clf = utils.ClassifierPredictor(model_id)

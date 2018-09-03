@@ -67,21 +67,6 @@ class Seq2Vec(object):
         return sequences
 
 
-    def fasta2string(self, sequences):
-        fasta_io = StringIO(sequences)
-        reads = SeqIO.parse(fasta_io, "fasta")
-
-        identifiers = []
-        seqs = []
-
-        for indx, seq in enumerate(reads):
-            identifiers.append(seq.name)
-            seqs.append(str(seq.seq))
-            if indx >= 1000:
-                break
-        fasta_io.close()
-
-        return identifiers, seqs
 
 
 class ClassifierPredictor(object):
@@ -100,11 +85,7 @@ class ClassifierPredictor(object):
         def _decode(i):
             value_predictions = []
             for indx, prob in enumerate(i):#
-                try:
-                    value_predictions.append([label_dict[str(indx)][prob.argmax(axis=-1)[0]], float(np.max(prob))])
-                except IndexError:
-                    #print(prob.argmax(axis=-1), indx, len(i))
-                    pass
+                value_predictions.append([label_dict[str(indx)][prob.argmax(axis=-1)[0]], float(np.max(prob))])
             return value_predictions
 
 
@@ -132,6 +113,27 @@ class ClassifierPredictor(object):
         else:
             self.probabilities = self.model.predict(s2v.sequences)
         K.clear_session()
+
+
+class Fasta2Dict(object):
+    def __init__(self, fasta):
+        self.fasta = fasta
+        self.payload = self.do()
+
+    def do(self):
+        fasta_io = StringIO(self.fasta)
+        reads = SeqIO.parse(fasta_io, "fasta")
+
+        payload = {}
+
+        for indx, seq in enumerate(reads):
+            payload[seq.name] = str(seq.seq)
+            if indx >= 1000:
+                break
+        fasta_io.close()
+
+        return payload
+
 
 class MetadataGenerator(object):
     def __init__(self, form):
