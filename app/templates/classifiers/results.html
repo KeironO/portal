@@ -1,1 +1,28 @@
-{{ extends "base.html" }}
+{% extends "base.html" %}
+
+{% block title %}Results{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap3.min.css">
+{% endblock %}
+
+{% block jumbotron %}
+<div class="jumbotron heading">
+  <div class="container">
+  <h1>Results</h1>
+  </div>
+</div>
+{% endblock %}
+
+{% block body %}
+
+<table id="example" class="display" style="width:100%"></table>
+{% endblock %}
+
+
+{% block javascript %}
+<script src="{{ url_for('bower.static', filename='datatables/media/js/jquery.dataTables.min.js') }}"></script>
+<script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap3.min.js"></script>
+
+<script src="{{ url_for('static', filename='js/results.js') }}"></script>
+{% endblock %}
