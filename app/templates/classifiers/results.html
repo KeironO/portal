@@ -3,7 +3,7 @@
 {% block title %}Results{% endblock %}
 
 {% block css %}
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap3.min.css">
+<link rel="stylesheet" type="text/css" href="{{ url_for('bower.static', filename='datatables/media/css/dataTables.bootstrap4.css') }}">
 {% endblock %}
 
 {% block jumbotron %}
@@ -16,13 +16,14 @@
 
 {% block body %}
 
-<table id="example" class="display" style="width:100%"></table>
+<table id="example" class="display table" style="width:100%"></table>
 {% endblock %}
 
 
 {% block javascript %}
 <script src="{{ url_for('bower.static', filename='datatables/media/js/jquery.dataTables.min.js') }}"></script>
-<script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap3.min.js"></script>
+<script src="{{ url_for('bower.static', filename='datatables/media/js/dataTables.bootstrap4.min.js') }}"></script>
+
 
 <script src="{{ url_for('static', filename='js/results.js') }}"></script>
 {% endblock %}
