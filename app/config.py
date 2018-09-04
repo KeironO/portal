@@ -1,4 +1,4 @@
-
+import tempfile
 
 class Config(object):
     # TODO: Sort all of this out
@@ -6,3 +6,5 @@ class Config(object):
 
     REPO_URL = "https://github.com/KeironO/deepseq2vec-repo"
     REPO_DIR = "deepseq2vec-repo"
+
+    STORAGE_DIR = tempfile.gettempdir()

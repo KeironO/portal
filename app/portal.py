@@ -42,7 +42,7 @@ def classifier(model_id):
     if form.validate_on_submit():
         payload = utils.Fasta2Dict(form.sequences.data).payload
         session["job_hash"] = uuid.uuid4().hex
-        session["job_fp"] = os.path.join(tempfile.gettempdir(), session["job_hash"] + ".json")
+        session["job_fp"] = os.path.join(CONFIG.STORAGE_DIR, session["job_hash"] + ".json")
         session["api_url"] = request.url + "/api/"
 
         job_details = {
