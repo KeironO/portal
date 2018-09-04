@@ -63,7 +63,13 @@ class Seq2Vec(object):
             encoding_dict = json.load(infile)
         sequences = []
         for seq in self.sequences:
-            sequences.append(pad_sequences([[encoding_dict[x] for x in seq]], maxlen=self.max_len))
+            padded = []
+            for x in seq:
+                try:
+                    padded.append(encoding_dict[x])
+                except KeyError:
+                    pass
+            sequences.append(pad_sequences([padded], maxlen=self.max_len))
         return sequences
 
 

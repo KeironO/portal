@@ -6,9 +6,12 @@ from config import Config
 import json
 from flask import render_template, request, make_response, abort, redirect, url_for, session, jsonify
 from flask.views import MethodView
+import uuid
 import forms
 import utils
 import requests
+import datetime
+import tempfile
 
 repo = utils.RepoController(Config.REPO_URL, Config.REPO_DIR)
 classifiers_dict = repo.get_structure()
@@ -38,8 +41,20 @@ def classifier(model_id):
 
     if form.validate_on_submit():
         payload = utils.Fasta2Dict(form.sequences.data).payload
-        session["payload"] = payload
+        session["job_hash"] = uuid.uuid4().hex
+        session["job_fp"] = os.path.join(tempfile.gettempdir(), session["job_hash"] + ".json")
         session["api_url"] = request.url + "/api/"
+
+        job_details = {
+            "job_hash": session["job_hash"],
+            "time": datetime.datetime.now().isoformat(),
+            "ip": request.remote_addr,
+            "payload": payload,
+            "request_url": session["api_url"]
+        }
+
+        with open(session["job_fp"], "w") as outfile:
+            json.dump(job_details, outfile)
         return redirect(url_for("results", model_id=model_id))
 
     return render_template("classifiers/classifier.html", model_id=model_id,
@@ -53,7 +68,10 @@ def results(model_id):
 
 @app.route("/classifiers/<model_id>/results/get", methods=["GET"])
 def results_getter(model_id):
-    response = requests.post(session["api_url"], json=session["payload"])
+    with open(session["job_fp"], "r") as infile:
+        job_details = json.load(infile)
+    
+    response = requests.post(session["api_url"], json=job_details["payload"])
     if response.status_code == 200:
         parser = {"_items" : []}
         for key, values in response.json().items():
