@@ -104,7 +104,7 @@ venv.bak/
 app/bower_components
 
 # Repository stuff
-app/
+deepseq2vec-repo/
 
 # mypy
 .mypy_cache/
