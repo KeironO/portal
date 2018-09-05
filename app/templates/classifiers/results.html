@@ -18,7 +18,8 @@
 
 <table id="results-table" class="display table" style="width:100%"></table>
 
-<canvas id="myChart" width="200" height="200"></canvas>
+<h2>Assignment Counts</h2>
+<div id="results-plot"></div>
 
 {% endblock %}
 
@@ -26,7 +27,7 @@
 {% block javascript %}
 <script src="{{ url_for('bower.static', filename='datatables/media/js/jquery.dataTables.min.js') }}"></script>
 <script src="{{ url_for('bower.static', filename='datatables/media/js/dataTables.bootstrap4.min.js') }}"></script>
-<script src="{{ url_for('bower.static', filename='chart.js/dist/Chart.bundle.js') }}"></script>
+<script src="{{ url_for('bower.static', filename='plotlyjs/plotly.js') }}"></script>
 <script src="{{ url_for('bower.static', filename='palette.js/palette.js') }}"></script>
 <script src="{{ url_for('static', filename='js/results.js') }}"></script>
 {% endblock %}
