@@ -147,3 +147,9 @@ nav a {
 .footer img {
   max-width: 200px;
 }
+
+
+#results-chart {
+  max-width:200px;
+  max-height:500px;
+}
