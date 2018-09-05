@@ -6,7 +6,7 @@ $(document).ready(function() {
     // Populate results table, alpha.
     $.getJSON(get_url, function(data) {
         var predictions = data["_items"];
-        chart(predictions, 4);
+        chart(predictions, 3);
         $("#results-table").DataTable({
             "data": predictions,
             "pageLength": 10,
@@ -43,7 +43,11 @@ $(document).ready(function() {
                 counts[pred[0]] = 1
             }
         });
-        var seq = palette('tol-sq', 10);
+        var bcs = palette('tol', Object.keys(counts).length).map(function(hex) {
+              return '#' + hex;
+            });
+
+        console.log(bcs, typeof bcs, Object.values(bcs));
 
         var ctx = document.getElementById("myChart");
         var myChart = new Chart(ctx, {
@@ -53,13 +57,10 @@ $(document).ready(function() {
                 datasets: [{
                     label: '# of Annotations',
                     data: Object.values(counts),
-                    borderWidth: 1
-                }]
+                    backgroundColor: Object.values(bcs)
+                }],
+
             },
-            backgroundColor: palette('tol', Object.keys(counts).length).map(function(hex) {
-              console.log('#' + hex);
-              return '#' + hex;
-            }),
             options: {
                 scales: {
                     yAxes: [{
