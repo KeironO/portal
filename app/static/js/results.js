@@ -6,8 +6,52 @@ $(document).ready(function() {
     // Populate results table, alpha.
     $.getJSON(get_url, function(data) {
         var predictions = data["_items"];
-        chart(predictions, 0);
-        $("#results-table").DataTable({
+        chart(predictions);
+        populateTable(predictions);
+
+        $("input[type=radio][name=optionsRadios]").change(function() {
+          var qcPredictions = limitPredictions(predictions, this.value);
+          chart(qcPredictions);
+          populateTable(qcPredictions);
+        });
+    });
+
+    function limitPredictions(predictions, qcValue) {
+      var limits = {
+        "none" : 0.0,
+        "low" : 0.5,
+        "medium" : 0.7,
+        "high" : 0.85,
+        "ridiculous" : 0.9
+      }
+
+      new_predictions = []
+
+      predictions.forEach(function(result) {
+        var qc_ed = []
+
+        result["predictions"].forEach(function(pred) {
+
+          if (pred[1] > limits[qcValue]) {
+            qc_ed.push(pred);
+          }
+          else {
+            return false; // End assignment.
+          }
+
+        });
+          new_predictions.push({"seq_id" : result["seq_id"], "predictions" : qc_ed})
+      });
+      return new_predictions
+    }
+
+
+    function populateTable(predictions) {
+
+
+
+    $("#results-table").DataTable({
+            "destroy": true,
             "data": predictions,
             "pageLength": 10,
             "columns": [{
@@ -15,7 +59,7 @@ $(document).ready(function() {
                     "data": "seq_id"
                 },
                 {
-                    "title": "Results",
+                    "title": "Assignment",
                     "data": "predictions",
                     "render": function(data, type, row) {
                         var final_str = ""
@@ -30,7 +74,8 @@ $(document).ready(function() {
                 }
             ]
         });
-    });
+
+    }
 
     function cleanPredictions(predictions) {
         var cleanPredictions = { }
