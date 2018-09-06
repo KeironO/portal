@@ -51,7 +51,10 @@
     <title>{% block title %}{% endblock %} : DeepSeq2Taxon</title>
     {% block css %}{% endblock %}
     <link rel="stylesheet" type="text/css" href="{{ url_for('bower.static', filename='bootstrap/dist/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="{{ url_for('static', filename='css/globs.css') }}" rel="stylesheet">
+    <link rel="icon" href="{{ url_for('static', filename='images/ds2v_black.svg') }}" type="image/svg" sizes="16x16">
+
 </head>
 
 <body>
@@ -70,16 +73,16 @@
  <div class="collapse navbar-collapse" id="navbarCollapse">
    <ul class="navbar-nav ml-auto">
      <li class="nav-item">
-       <a class="nav-link" href="{{ url_for('index')}}">Home</a>
+       <a class="nav-link" href="{{ url_for('index')}}"><i class="fa fa-home"></i> Home</a>
      </li>
      <li class="nav-item">
-       <a class="nav-link" href="{{ url_for('classifiers')}}">Classifiers</a>
+       <a class="nav-link" href="{{ url_for('classifiers')}}"><i class="fa fa-hourglass"></i> Classifiers</a>
      </li>
      <li class="nav-item">
-       <a class="nav-link" href="{{ url_for('contribute')}}">Contribute</a>
+       <a class="nav-link" href="{{ url_for('contribute')}}"><i class="fa fa-file"></i> Contribute</a>
      </li>
      <li class="nav-item">
-       <a class="nav-link" href="{{ url_for('docs')}}">Docs</a>
+       <a class="nav-link" href="{{ url_for('docs')}}"><i class="fa fa-file"></i> Docs</a>
      </li>
    </ul>
  </div>
