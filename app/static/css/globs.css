@@ -44,6 +44,11 @@ body {
   margin-bottom: inherit !important;
 }
 
+.jumbotron.home img {
+  max-height: 200px;
+  max-width: inherit;
+}
+
 .jumbotron.home {
   margin-bottom: 0;
   background-image: url("../images/sequencers.png");
@@ -52,6 +57,19 @@ body {
   height: 300px;
   text-shadow: 4px 4px 8px #000;
 }
+
+.jumbotron.home-info {
+  padding:1rem;
+  margin:0;
+  text-align:center;
+}
+
+.jumbotron.home-info img {
+  padding:2rem;
+
+}
+
+
 
 .full-width {
   width: 100%;
@@ -123,6 +141,10 @@ form {
   margin-bottom: 3rem;
 }
 
+.col-sm-4 img {
+width:100%;
+}
+
 textarea {
   margin-bottom: 1rem;
 }
@@ -146,4 +168,8 @@ nav a {
 
 .footer img {
   max-width: 200px;
+}
+
+#loading-screen {
+  text-align: center;
 }

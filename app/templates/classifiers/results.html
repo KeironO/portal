@@ -15,60 +15,60 @@
 {% endblock %}
 
 {% block body %}
+  <div id="generated-results" style="display:none;">
+    <h2>Assignment Table</h2>
 
-  <h2>Assignment Table</h2>
-
-  <div class="row">
-    <div class="col-md-9">
-      <table id="results-table" class="display table" style="width:100%"></table>
-    </div>
-    <div class="col-md-3">
-      <div class="card">
-        <div class="card-header">QC</div>
-        <div class="card-body">
-          <fieldset class="form-group">
-            <div class="form-check">
-              <label class="form-check-label">
-                <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadiosNone" value="none" checked>
-                None
-              </label>
-            </div>
-            <div class="form-check">
-            <label class="form-check-label">
-                <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadiosLow" value="low">
-                Low (> 50%)
-              </label>
-            </div>
-            <div class="form-check">
-            <label class="form-check-label">
-                <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadiosMedium" value="medium">
-                Medium (> 70%)
-              </label>
-            </div>
+    <div class="row">
+      <div class="col-md-9">
+        <table id="results-table" class="display table" style="width:100%"></table>
+      </div>
+      <div class="col-md-3">
+        <div class="card">
+          <div class="card-header">QC</div>
+          <div class="card-body">
+            <fieldset class="form-group">
               <div class="form-check">
-            <label class="form-check-label">
-                <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadiosHigh" value="high">
-                High (> 85%)
-              </label>
-            </div>
+                <label class="form-check-label">
+                  <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadiosNone" value="none" checked>
+                  None
+                </label>
+              </div>
+              <div class="form-check">
+              <label class="form-check-label">
+                  <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadiosLow" value="low">
+                  Low (> 50%)
+                </label>
+              </div>
+              <div class="form-check">
+              <label class="form-check-label">
+                  <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadiosMedium" value="medium">
+                  Medium (> 70%)
+                </label>
+              </div>
                 <div class="form-check">
-            <label class="form-check-label">
-                <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadiosRidiculous" value="ridiculous">
-                Ridiculous (> 90%)
-              </label>
-            </div>
-          </fieldset>
+              <label class="form-check-label">
+                  <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadiosHigh" value="high">
+                  High (> 85%)
+                </label>
+              </div>
+                  <div class="form-check">
+              <label class="form-check-label">
+                  <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadiosRidiculous" value="ridiculous">
+                  Ridiculous (> 90%)
+                </label>
+              </div>
+            </fieldset>
+          </div>
         </div>
       </div>
     </div>
 
-
+    <h2>Assignment Counts</h2>
+    <div id="results-plot"></div>
   </div>
-
-
-
-  <h2>Assignment Counts</h2>
-  <div id="results-plot"></div>
+  <div id="loading-screen">
+    Loading...
+  </div>
 
 {% endblock %}
 

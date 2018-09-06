@@ -8,41 +8,62 @@ $(document).ready(function() {
         var predictions = data["_items"];
         chart(predictions);
         populateTable(predictions);
+        resultsShow(500, true);
 
         $("input[type=radio][name=optionsRadios]").change(function() {
-          var qcPredictions = limitPredictions(predictions, this.value);
-          chart(qcPredictions);
-          populateTable(qcPredictions);
+            resultsHide(100, false);
+            var qcPredictions = limitPredictions(predictions, this.value);
+            chart(qcPredictions);
+            populateTable(qcPredictions);
+            resultsShow(100, false);
         });
     });
 
-    function limitPredictions(predictions, qcValue) {
-      var limits = {
-        "none" : 0.0,
-        "low" : 0.5,
-        "medium" : 0.7,
-        "high" : 0.85,
-        "ridiculous" : 0.9
+    function resultsHide(timing, loading) {
+      $("#generated-results").fadeOut(timing);
+      if (loading == true) {
+          $("#loading-screen").fadeIn(timing);
       }
 
-      new_predictions = []
+    }
 
-      predictions.forEach(function(result) {
-        var qc_ed = []
+    function resultsShow(timing, loading) {
+      if (loading == true) {
+        $("#loading-screen").fadeOut(timing);
+      }
+      $("#generated-results").fadeIn(timing);
 
-        result["predictions"].forEach(function(pred) {
+    }
 
-          if (pred[1] > limits[qcValue]) {
-            qc_ed.push(pred);
-          }
-          else {
-            return false; // End assignment.
-          }
+    function limitPredictions(predictions, qcValue) {
+        var limits = {
+            "none": 0.0,
+            "low": 0.5,
+            "medium": 0.7,
+            "high": 0.85,
+            "ridiculous": 0.9
+        }
 
+        new_predictions = []
+
+        predictions.forEach(function(result) {
+            var qc_ed = []
+
+            result["predictions"].forEach(function(pred) {
+
+                if (pred[1] > limits[qcValue]) {
+                    qc_ed.push(pred);
+                } else {
+                    return false; // End assignment.
+                }
+
+            });
+            new_predictions.push({
+                "seq_id": result["seq_id"],
+                "predictions": qc_ed
+            })
         });
-          new_predictions.push({"seq_id" : result["seq_id"], "predictions" : qc_ed})
-      });
-      return new_predictions
+        return new_predictions
     }
 
 
@@ -50,13 +71,14 @@ $(document).ready(function() {
 
 
 
-    $("#results-table").DataTable({
+        $("#results-table").DataTable({
             "destroy": true,
             "data": predictions,
-            "pageLength": 10,
+            "pageLength": 25,
             "columns": [{
                     "title": "Sequence ID",
-                    "data": "seq_id"
+                    "data": "seq_id",
+                    "width": "20%"
                 },
                 {
                     "title": "Assignment",
@@ -78,16 +100,16 @@ $(document).ready(function() {
     }
 
     function cleanPredictions(predictions) {
-        var cleanPredictions = { }
+        var cleanPredictions = {}
 
         predictions.forEach(function(sequence) {
             var preds = sequence["predictions"];
             var cleanedPreds = []
             preds.forEach(function(p) {
                 if (p[0] != "null") {
-                  cleanedPreds.push(p[0]);
+                    cleanedPreds.push(p[0]);
                 }
-              });
+            });
             cleanPredictions[sequence["seq_id"]] = cleanedPreds.join("; ");
         });
 
@@ -102,33 +124,28 @@ $(document).ready(function() {
         clearedPredictions.forEach(function(sequence) {
             if (sequence in counts) {
                 counts[sequence] += 1
-            }
-
-            else {
+            } else {
                 counts[sequence] = 1
             }
         });
 
         var data = [{
-        type: "bar",
-        y: Object.values(counts),
-        x: Object.keys(counts),
-        orientation: "v"
-      }];
+            type: "bar",
+            y: Object.values(counts),
+            x: Object.keys(counts),
+            orientation: "v"
+        }];
 
-      var layout = {
-      xaxis: {
+        var layout = {
+            xaxis: {
 
-    autotick: true,
-    autorange: true,
-    showticklabels: false
-  }
-      }
+                autotick: true,
+                autorange: true,
+                showticklabels: false
+            }
+        }
 
-      Plotly.newPlot("results-plot", data, layout)
-
-
-
+        Plotly.newPlot("results-plot", data, layout)
     }
 
 

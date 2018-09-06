@@ -5,29 +5,41 @@
 {% block jumbotron %}
 <div class="jumbotron home">
   <div class="container">
-  <h1>DeepSeq2Tax</h1>
-  <p>Some sort of tagline here that makes this look awesome.</p>
+    <div class="media">
+  <img class="align-self-center mr-3" src="{{ url_for('static', filename='images/ds2v_white.svg')}}" alt="Generic placeholder image">
+  <div class="media-body">
+    <h1 class="mt-0">DeepSeq2Taxon</h1>
+  </div>
+</div>
+  </div>
+</div>
+
+<div class="jumbotron home-info">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-4">
+          <img src="{{ url_for('static', filename='images/GNU.svg')}}">
+          <h3>Free, as in freedom</h3>
+          <p>Free, forever.</p>
+      </div>
+      <div class="col-sm-4">
+          <img src="{{ url_for('static', filename='images/api.svg')}}">
+          <h3>Extensible</h3>
+          <p>Free, forever.</p>
+      </div>
+      <div class="col-sm-4">
+          <h3>Community</h3>
+          <p>Free, forever.</p>
+          </div>
+    </div>
   </div>
 </div>
 
 {% endblock %}
 
 {% block body %}
-  <h2>Super Fast Taxonomies</h2>
 
-  <p></p>
 
-  <div class="row">
-    <div class="col-sm">
-      <img src="{{ url_for('static', filename='images/Open_Source_Initiative_keyhole.png')}}">
-    </div>
-    <div class="col-sm">
-      
-    </div>
 
-    <div class="col-sm">
-
-    </div>
-  </div>
 
 {% endblock %}
