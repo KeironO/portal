@@ -7,6 +7,7 @@
 {% endblock %}
 
 {% block jumbotron %}
+    <div id="generated-results" style="display:none;">
 <div class="jumbotron heading">
   <div class="container">
   <h1>Results</h1>
@@ -15,7 +16,7 @@
 {% endblock %}
 
 {% block body %}
-  <div id="generated-results" style="display:none;">
+
     <h2>Assignment Table</h2>
 
     <div class="row">
@@ -67,7 +68,10 @@
     <div id="results-plot"></div>
   </div>
   <div id="loading-screen">
-    Loading...
+    <div id="container">
+    <div class="loader"></div>
+
+      </div>
   </div>
 
 {% endblock %}
