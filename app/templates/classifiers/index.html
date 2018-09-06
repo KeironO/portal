@@ -1,5 +1,29 @@
 {% extends "base.html" %}
 
+
+
+{% macro render_card(model_id, details) %}
+
+<div class="card">
+      <div class="card-header bg-danger card-classifier-heading">{{ details["Gene"] }}</div>
+      <div class="card-body">
+        <div class="card-title">{{ details["Name"] }}</div>
+        <p class="card-text">{{ details["Description"] }}</p>
+        <p class="card-text"><small class="text-muted">Author: {{ details["Author Name"] }}</small></p>
+        <p class="card-text"><small class="text-muted">Sequencing System: {{ details["Sequencing System"] }} </small></p>
+         <a href="{{ url_for('classifier', model_id=model_id)}}">
+          <div class="btn btn-primary full-width">
+            Go
+          </div>
+        </a>
+      </div>
+    </div>
+{% endmacro %}
+
+{% macro render_blank() %}
+<div class="card"></div>
+{% endmacro %}
+
 {% block title %}Classifier{% endblock %}
 
 
@@ -13,22 +37,19 @@
 
 {% block body %}
 
+{% for split in splits %}
 <div class="card-deck">
-  {% for c in classifiers %}
-    <div class="card">
-      <div class="card-header bg-danger card-classifier-heading">{{ classifiers[c]["Gene"]}}</div>
-      <div class="card-body">
-        <div class="card-title">{{ classifiers[c]["Name"]}}</div>
-        <p class="card-text">{{ classifiers[c]["Description"]}}</p>
-        <p class="card-text"><small class="text-muted">Author: {{ classifiers[c]["Author Name"]}} // Sequencing System: {{ classifiers[c]["Sequencing System"]}}</small></p>
-        <a href="{{ url_for('classifier', model_id=c)}}">
-          <div class="btn btn-primary full-width">
-            Go
-          </div>
-        </a>
-      </div>
-    </div>
+  {% for classifier in split %}
+    {% for key, value in classifier.items() %}
+      {% if key != "#" %}
+        {{ render_card(key, value)}}
+      {% else %}
+        {{ render_blank() }}
+      {% endif %}
+    {% endfor %}
   {% endfor %}
-</div>
+  </div>
+{% endfor %}
+
 
 {% endblock %}

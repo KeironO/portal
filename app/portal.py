@@ -26,8 +26,21 @@ def docs():
 
 @app.route("/classifiers")
 def classifiers():
-    return render_template("classifiers/index.html", classifiers=
-                           classifiers_dict)
+
+    blank = {"#" : None}
+
+    # Splitting classifiers_dict into lists
+
+    identifiers = list(classifiers_dict.keys())
+    splits = [[{y: classifiers_dict[y]} for y in identifiers[x:x+2]] for x in range(0, len(identifiers), 2)]
+
+
+    for index, i in enumerate(splits):
+        if len(i) < 2:
+            for i in range(2 - len(i)):
+                splits[index].append(blank)
+
+    return render_template("classifiers/index.html", splits=splits)
 
 @app.route("/classifiers/<model_id>", methods=["GET", "POST"])
 def classifier(model_id):
