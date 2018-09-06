@@ -8,7 +8,7 @@
       <div class="card-header bg-danger card-classifier-heading">{{ details["Gene"] }}</div>
       <div class="card-body">
         <div class="card-title">{{ details["Name"] }}</div>
-        <p class="card-text">{{ details["Description"] }}</p>
+        <p class="card-text">{{ details["Description"]|truncate(75) }}</p>
         <p class="card-text"><small class="text-muted">Author: {{ details["Author Name"] }}</small></p>
         <p class="card-text"><small class="text-muted">Sequencing System: {{ details["Sequencing System"] }} </small></p>
          <a href="{{ url_for('classifier', model_id=model_id)}}">
@@ -21,10 +21,10 @@
 {% endmacro %}
 
 {% macro render_blank() %}
-<div class="card"></div>
+<div class="card bg-secondary"></div>
 {% endmacro %}
 
-{% block title %}Classifier{% endblock %}
+{% block title %}Classifiers{% endblock %}
 
 
 {% block jumbotron %}

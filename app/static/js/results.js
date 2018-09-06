@@ -68,13 +68,10 @@ $(document).ready(function() {
 
 
     function populateTable(predictions) {
-
-
-
         $("#results-table").DataTable({
             "destroy": true,
             "data": predictions,
-            "pageLength": 25,
+            "pageLength": 10,
             "columns": [{
                     "title": "Sequence ID",
                     "data": "seq_id",

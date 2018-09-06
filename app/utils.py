@@ -38,7 +38,7 @@ class RepoController(object):
         return classifiers_dict
 
 class Seq2Vec(object):
-    def __init__(self, payload, id, ngrams, max_len, limit=1000):
+    def __init__(self, payload, id, ngrams, max_len, limit=10000):
         self.model_id = id
         self.max_len = max_len
         self.ngrams = ngrams

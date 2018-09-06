@@ -29,8 +29,6 @@ def classifiers():
 
     blank = {"#" : None}
 
-    # Splitting classifiers_dict into lists
-
     identifiers = list(classifiers_dict.keys())
     splits = [[{y: classifiers_dict[y]} for y in identifiers[x:x+2]] for x in range(0, len(identifiers), 2)]
 
@@ -53,7 +51,12 @@ def classifier(model_id):
     download_url = Config.REPO_URL + "/blob/master/"+ model_id + "/training_file.fasta?raw=true"
 
     if form.validate_on_submit():
-        payload = utils.Fasta2Dict(form.sequences.data).payload
+
+        if type(form.sequences_file.data) != str:
+            sequence_data = str(form.sequences_file.data.read().decode("utf-8"))
+            payload = utils.Fasta2Dict(sequence_data).payload
+        else:
+            payload = utils.Fasta2Dict(form.sequences.data).payload
         session["job_hash"] = uuid.uuid4().hex
         session["job_fp"] = os.path.join(Config.STORAGE_DIR, session["job_hash"] + ".json")
         session["api_url"] = request.url + "/api/"

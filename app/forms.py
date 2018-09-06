@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, SubmitField, SelectField, IntegerField, BooleanField, RadioField
-from wtforms.validators import DataRequired, Email, NumberRange, Length
+from wtforms import StringField, TextAreaField, SubmitField, SelectField, IntegerField, BooleanField, RadioField, FileField
+from wtforms.validators import DataRequired, Email, NumberRange, Length, regexp
 
 
 class MetadataGeneratorForm(FlaskForm):
@@ -27,5 +27,6 @@ class MetadataGeneratorForm(FlaskForm):
 
 
 class SequenceSubmission(FlaskForm):
-    sequences = TextAreaField("Sequences", validators=[DataRequired()])
+    sequences = TextAreaField("Sequences", validators=[])
+    sequences_file = FileField("FASTA File")
     submit = SubmitField("Submit")

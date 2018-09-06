@@ -2,61 +2,68 @@
 
 <form action="" method="POST" enctype="multipart/form-data">
     {{ form.hidden_tag() }}
-    <div class="alert alert-warning">
-        <b>Alert:</b> Due to current infrastructure limitations, you can only enter a maximum of 1,000 sequences.
-    </div>
+    <p class="alert alert-warning">
+        <b>FYI:</b> Due to infrastructure limitations only the first 1,000 sequences will be assigned.
+    </p>
+
     <div class="form-group">
+
         <label for="sequences">Please enter your sequences:</label>
-        <textarea class="form-control" id="sequences" name="sequences" rows="10" required>
-    </textarea>
-        <p class="muted">Currently supported types: <label class="btn btn-primary btn-sm">FASTA</label></p>
+        <textarea class="form-control" id="sequences" name="sequences" rows="10"></textarea>
+        {{ form.sequences_file() }}
+
     </div>
     <button type="submit" class="btn btn-primary float-right">Submit</button>
+          <p class="muted">Currently supported formats: <label class="btn btn-primary btn-sm">FASTA</label></p>
 </form>
 
-{% endmacro %} {% extends "base.html" %} {% block title %}{{model_id}}{% endblock %} {% block jumbotron %}
+{% endmacro %}
+
+
+{% extends "base.html" %}
+
+
+{% block title %}{{model_id}}{% endblock %}
+
+
+
+{% block jumbotron %}
 <div class="jumbotron heading">
-    <div class="container">
-        <h1>{{ model_id }}: {{info['Name']}}</h1>
-    </div>
+  <div class="container">
+  <h1>{{ model_id }}: {{ info["Name"] }}</h1>
+  </div>
 </div>
-{% endblock %} {% block body %}
+{% endblock %}
 
-<div class="card">
-    <div class="card-header bg-primary">
-        <h1 class="text-white">Model Information</h1>
-    </div>
-    <div class="card-body">
-        <p>Description: {{ info["Description"]}} </p>
 
+
+{% block body %}
+
+
+<p><b>Description:</b></p>
+        <p>{{ info["Description"]}} </p>
         <div class="row">
             <div class="col-sm">
-                Max Length: {{ info["Max Length"]}}
-            </div>
-            <div class="col-sm">
-                Ngrams: {{ info["ngrams"]}}
-            </div>
-            <div class="col-sm">
-                Paired: {{ info["Paired"]}}
-            </div>
-        </div>
-    </div>
-    <div class="card-footer">
-        <div class="row">
-          <div class="col-sm">
-            Author: {{ info["Author Name"]}}
-          </div>
-          <div class="col-sm">
+                <p><b>Max Length:</b> {{ info["Max Length"]}}</p>
 
-          </div>
-          <div class="col-sm">
-            <a href="{{ download_url }}">
-            <button class="btn btn-success btn-sm float-right">Training Data</button>
-          </a>
-          </div>
+            </div>
+            <div class="col-sm">
+                <p><b>Sequencing System:</b> {{ info["Sequencing System"]}}</p>
+            </div>
+            <div class="col-sm">
+                <p><b>Paired:</b> {{ info["Paired"]}}</p>
+
+            </div>
         </div>
-    </div>
-</div>
+
+
+<div class="row">
+          <div class="col-sm">
+            <p class="muted"><small>Author: {{ info["Author Name"]}} // {{ info["Institution"] }}</small></p>
+          </div>
+         </div>
+
+
 
 {{ render_classifier_form(form) }}
 
