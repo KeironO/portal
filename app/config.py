@@ -8,4 +8,5 @@ class Config(object):
     REPO_DIR = "deepseq2vec-repo"
     #MAX_CONTENT_LENGTH = 15 * 1024 * 1024
 
-    STORAGE_DIR = tempfile.gettempdir()
+    #STORAGE_DIR = tempfile.gettempdir()
+    STORAGE_DIR = "/home/keo7/Bumf/deepseq2taxon-output/"

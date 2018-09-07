@@ -26,12 +26,9 @@ def docs():
 
 @app.route("/classifiers")
 def classifiers():
-
     blank = {"#" : None}
-
     identifiers = list(classifiers_dict.keys())
     splits = [[{y: classifiers_dict[y]} for y in identifiers[x:x+2]] for x in range(0, len(identifiers), 2)]
-
 
     for index, i in enumerate(splits):
         if len(i) < 2:
@@ -57,44 +54,55 @@ def classifier(model_id):
             payload = utils.Fasta2Dict(sequence_data).payload
         else:
             payload = utils.Fasta2Dict(form.sequences.data).payload
-        session["job_hash"] = uuid.uuid4().hex
-        session["job_fp"] = os.path.join(Config.STORAGE_DIR, session["job_hash"] + ".json")
-        session["api_url"] = request.url + "/api/"
+        job_hash = uuid.uuid4().hex
+        job_fp = os.path.join(Config.STORAGE_DIR, job_hash + ".json")
+
 
         job_details = {
             "job_hash": session["job_hash"],
             "time": datetime.datetime.now().isoformat(),
             "ip": request.remote_addr,
+            "model_id" : model_id,
             "payload": payload,
             "request_url": session["api_url"]
         }
 
         with open(session["job_fp"], "w") as outfile:
             json.dump(job_details, outfile)
-        return redirect(url_for("results", model_id=model_id))
+
+
+        return redirect(url_for("results", model_id=model_id, job_hash=job_hash))
 
     return render_template("classifiers/classifier.html", model_id=model_id,
                            info=classifier_info, form=form,
                            download_url=download_url)
 
 
-@app.route("/classifiers/<model_id>/results", methods=["GET"])
-def results(model_id):
+@app.route("/classifiers/<model_id>/results/<job_hash>", methods=["GET"])
+def results(model_id, job_hash):
     return render_template("classifiers/results.html")
 
-@app.route("/classifiers/<model_id>/results/get", methods=["GET"])
-def results_getter(model_id):
+@app.route("/classifiers/<model_id>/results/<job_hash>/get/", methods=["GET"])
+def results_getter(model_id, job_hash):
     with open(session["job_fp"], "r") as infile:
         job_details = json.load(infile)
     
-    response = requests.post(session["api_url"], json=job_details["payload"])
-    if response.status_code == 200:
-        parser = {"_items" : []}
-        for key, values in response.json().items():
-            parser["_items"].append({"seq_id":key, "predictions" : values})
-        return jsonify(parser)
+    if "results" in job_details:
+        return jsonify(job_details["results"])
     else:
-        abort(500)
+        response = requests.post(session["api_url"], json=job_details["payload"])
+        if response.status_code == 200:
+            parser = {"_items" : []}
+            for key, values in response.json().items():
+                parser["_items"].append({"seq_id":key, "predictions" : values})
+
+            job_details["results"] = parser
+            with open(session["job_fp"], "wb") as outfile:
+                json.dump(job_details, outfile)
+
+            return jsonify(parser)
+        else:
+            abort(500)
 
 @app.route("/classifiers/<model_id>/api/", methods=["POST"])
 def api(model_id):
@@ -103,7 +111,6 @@ def api(model_id):
             classifier_info = classifiers_dict[model_id]
         except KeyError:
             return abort(404)
-
 
         payload = request.get_json()
 
@@ -123,8 +130,6 @@ def api(model_id):
         )
         return response
 
-
-
 @app.route("/contribute", methods=["GET", "POST"])
 def contribute():
     form = forms.MetadataGeneratorForm(request.form)
@@ -134,6 +139,7 @@ def contribute():
         response.headers["Content-Disposition"] = "attachment; filename=metadata.json"
         return response
     return render_template("contribute.html", form=form)
+
 
 @app.route("/")
 def index():
