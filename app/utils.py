@@ -138,7 +138,7 @@ class Fasta2Dict(object):
 
         for indx, seq in enumerate(reads):
             payload[seq.name] = str(seq.seq)
-            if indx >= 1000:
+            if indx >= 10000:
                 break
         fasta_io.close()
 

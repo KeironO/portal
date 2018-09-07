@@ -72,6 +72,10 @@ $(document).ready(function() {
             "destroy": true,
             "data": predictions,
             "pageLength": 10,
+            "dom": 'Bfrtip',
+            "buttons": [
+              "copy", "csv", "excel", "pdf", "print"
+            ],
             "columns": [{
                     "title": "Sequence ID",
                     "data": "seq_id",

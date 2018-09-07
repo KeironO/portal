@@ -37,6 +37,7 @@ body {
 .jumbotron.heading {
   padding: 3rem;
   background-color: #176294;
+  color:#fff !important;
 }
 
 .jumbotron.heading h1 {
@@ -197,3 +198,4 @@ nav a {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
+
