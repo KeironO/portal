@@ -103,7 +103,10 @@ def api(model_id):
             classifier_info = classifiers_dict[model_id]
         except KeyError:
             return abort(404)
+
+
         payload = request.get_json()
+
         vec = utils.Seq2Vec(payload, model_id, classifier_info["ngrams"], classifier_info["Max Length"])
         clf = utils.ClassifierPredictor(model_id)
         clf.predict(vec)
