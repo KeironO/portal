@@ -97,7 +97,6 @@ def results_getter(model_id, job_hash):
     else:
         api_url = "".join(request.url_root[:-1]) + url_for("api", model_id=job_details["model_id"])
         response = requests.post(api_url, json=job_details["payload"])
-        print(response)
         if response.status_code == 200:
             parser = {"_items" : []}
             for key, values in response.json().items():

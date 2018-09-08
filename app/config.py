@@ -6,7 +6,6 @@ class Config(object):
 
     REPO_URL = "https://github.com/KeironO/deepseq2vec-repo"
     REPO_DIR = "deepseq2vec-repo"
-    #MAX_CONTENT_LENGTH = 15 * 1024 * 1024
+    #MAX_CONTENT_LENGTH = 15 * 2048 * 2048
 
-    #STORAGE_DIR = tempfile.gettempdir()
     STORAGE_DIR = "store"
