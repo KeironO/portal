@@ -22,6 +22,9 @@ app = Flask(__name__)
 app.config.from_object(Config)
 Bower(app)
 
+if os.path.isdir(Config.STORAGE_DIR) is False:
+    os.mkdir(Config.STORAGE_DIR)
+
 @app.route("/docs")
 def docs():
     return render_template("docs.html")
@@ -102,7 +105,7 @@ def results_getter(model_id, job_hash):
 
             job_details["results"] = parser
             with open(session["job_fp"], "w") as outfile:
-                json.dump(job_details, outfile)
+                json.dump(job_details, outfile, indent=4)
             return jsonify(parser)
         else:
             abort(500)
