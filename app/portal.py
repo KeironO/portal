@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import os
 from flask import Flask
 from flask_bower import Bower
@@ -59,17 +61,17 @@ def classifier(model_id):
 
 
         job_details = {
-            "job_hash": session["job_hash"],
+            "job_hash": job_hash,
             "time": datetime.datetime.now().isoformat(),
             "ip": request.remote_addr,
             "model_id" : model_id,
-            "payload": payload,
-            "request_url": session["api_url"]
+            "payload": payload
         }
 
-        with open(session["job_fp"], "w") as outfile:
+        with open(job_fp, "w") as outfile:
             json.dump(job_details, outfile)
 
+        session["job_fp"] = job_fp
 
         return redirect(url_for("results", model_id=model_id, job_hash=job_hash))
 
@@ -90,16 +92,17 @@ def results_getter(model_id, job_hash):
     if "results" in job_details:
         return jsonify(job_details["results"])
     else:
-        response = requests.post(session["api_url"], json=job_details["payload"])
+        api_url = "".join(request.url_root[:-1]) + url_for("api", model_id=job_details["model_id"])
+        response = requests.post(api_url, json=job_details["payload"])
+        print(response)
         if response.status_code == 200:
             parser = {"_items" : []}
             for key, values in response.json().items():
                 parser["_items"].append({"seq_id":key, "predictions" : values})
 
             job_details["results"] = parser
-            with open(session["job_fp"], "wb") as outfile:
+            with open(session["job_fp"], "w") as outfile:
                 json.dump(job_details, outfile)
-
             return jsonify(parser)
         else:
             abort(500)
