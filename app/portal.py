@@ -103,11 +103,17 @@ def generate_tree(model_id, job_hash, qc_value):
 
     results = [[i[0] for i in x["predictions"] if i[1] >= float(qc_value) and i[0] != "null"] for x in results]
 
+    counts = {"root" : 1}
+
     for parts in results:
         parent_list = J
         current_list = J
 
         for index, part in enumerate(parts):
+            if part not in counts:
+                counts[part] = 1
+            else:
+                counts[part] += 1
             for item in current_list:
                 if part in item:
                     parent_list, current_list = current_list, item[part]
@@ -129,7 +135,7 @@ def generate_tree(model_id, job_hash, qc_value):
             val = ("children", [transform_node(*kv) for kv in val.items()])
         else:
             val = ("value", val)
-        return dict([("name", name), val])
+        return dict([("name", str("%s (%i)" % (name, counts[name]))), val])
 
     return jsonify(transform_node("root", J))
 
