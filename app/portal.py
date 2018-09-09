@@ -15,7 +15,7 @@ import requests
 import datetime
 import tempfile
 
-repo = utils.RepoController(Config.REPO_URL, Config.REPO_DIR, get=False)
+repo = utils.RepoController(Config.REPO_URL, Config.REPO_DIR, get=True)
 classifiers_dict = repo.get_structure()
 
 app = Flask(__name__)
@@ -117,9 +117,18 @@ def tree(model_id, job_hash, qc_value):
                     parent_list = current_list
 
 
-    return jsonify(J)
+    def transform_node(name, val):
+        if isinstance(val, list):
+            val = ("children", [transform_node(k,v) for x in val for k, v in x.items()])
+        elif isinstance(val, dict):
+            val = ("children", [transform_node(*kv) for kv in val.items()])
+        else:
+            val = ("value", val)
+        return dict([("name", name), val])
 
-@app.route("/classifiers/<model_id>/results///<job_hash>/get/", methods=["GET"])
+    return jsonify(transform_node("root", J))
+
+@app.route("/classifiers/<model_id>/results/<job_hash>/get", methods=["GET"])
 def results_getter(model_id, job_hash):
     # Generate job fp here.
     job_fp = os.path.join(Config.STORAGE_DIR, job_hash + ".json")
