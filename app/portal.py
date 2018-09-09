@@ -15,7 +15,7 @@ import requests
 import datetime
 import tempfile
 
-repo = utils.RepoController(Config.REPO_URL, Config.REPO_DIR)
+repo = utils.RepoController(Config.REPO_URL, Config.REPO_DIR, get=False)
 classifiers_dict = repo.get_structure()
 
 app = Flask(__name__)
@@ -57,6 +57,7 @@ def classifier(model_id):
         if type(form.sequences_file.data) != str:
             sequence_data = str(form.sequences_file.data.read().decode("utf-8"))
             payload = utils.Fasta2Dict(sequence_data).payload
+
         else:
             payload = utils.Fasta2Dict(form.sequences.data).payload
         job_hash = uuid.uuid4().hex
@@ -74,8 +75,6 @@ def classifier(model_id):
         with open(job_fp, "w") as outfile:
             json.dump(job_details, outfile)
 
-        session["job_fp"] = job_fp
-
         return redirect(url_for("results", model_id=model_id, job_hash=job_hash))
 
     return render_template("classifiers/classifier.html", model_id=model_id,
@@ -89,7 +88,9 @@ def results(model_id, job_hash):
 
 @app.route("/classifiers/<model_id>/results/<job_hash>/get/", methods=["GET"])
 def results_getter(model_id, job_hash):
-    with open(session["job_fp"], "r") as infile:
+    # Generate job fp here.
+    job_fp = os.path.join(Config.STORAGE_DIR, job_hash + ".json")
+    with open(job_fp , "r") as infile:
         job_details = json.load(infile)
     
     if "results" in job_details:
@@ -103,7 +104,7 @@ def results_getter(model_id, job_hash):
                 parser["_items"].append({"seq_id":key, "predictions" : values})
 
             job_details["results"] = parser
-            with open(session["job_fp"], "w") as outfile:
+            with open(job_fp, "w") as outfile:
                 json.dump(job_details, outfile, indent=4)
             return jsonify(parser)
         else:
@@ -117,8 +118,10 @@ def api(model_id):
         except KeyError:
             return abort(404)
 
-        payload = request.get_json()
-
+        if request.mimetype == "application/json":
+            payload = request.get_json()
+        elif request.mimetype == "text/x-fasta":
+            payload = utils.Fasta2Dict(request.data.decode("utf-8")).payload
         vec = utils.Seq2Vec(payload, model_id, classifier_info["ngrams"], classifier_info["Max Length"])
         clf = utils.ClassifierPredictor(model_id)
         clf.predict(vec)

@@ -12,14 +12,15 @@ from keras.preprocessing.sequence import pad_sequences
 from keras import backend as K
 
 class RepoController(object):
-    def __init__(self, repo_url, repo_dir):
+    def __init__(self, repo_url, repo_dir, get):
         self.repo_url = repo_url
         self.repo_dir = repo_dir
 
-        if os.path.isdir(self.repo_dir) is False:
-            self.clone_repo()
-        else:
-            self.pull_repo()
+        if get != False:
+            if os.path.isdir(self.repo_dir) is False:
+                self.clone_repo()
+            else:
+                self.pull_repo()
 
     def clone_repo(self):
         git.Repo.clone_from(self.repo_url, self.repo_dir)

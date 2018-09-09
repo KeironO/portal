@@ -46,12 +46,17 @@ body {
   margin-bottom: inherit !important;
 }
 
+
+
 .jumbotron.home img {
   max-height: 200px;
   max-width: inherit;
 }
 
+
+
 .jumbotron.home {
+  text-align:center;
   margin-bottom: 0;
   background-image: url("../images/sequencers.png");
   background-size: cover;
@@ -71,6 +76,9 @@ body {
 
 }
 
+.jumbotron.home h3 {
+  color:#fff !important;
+}
 
 
 .full-width {
