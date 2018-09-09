@@ -86,7 +86,40 @@ def classifier(model_id):
 def results(model_id, job_hash):
     return render_template("classifiers/results.html")
 
-@app.route("/classifiers/<model_id>/results/<job_hash>/get/", methods=["GET"])
+@app.route("/classifiers/<model_id>/results/<job_hash>/tree/<qc_value>", methods=["GET"])
+def tree(model_id, job_hash, qc_value):
+    job_fp = os.path.join(Config.STORAGE_DIR, job_hash + ".json")
+    with open(job_fp, "r") as infile:
+        job_details = json.load(infile)
+
+    results = job_details["results"]["_items"]
+
+    J = []
+
+    results = [[i[0] for i in x["predictions"] if i[1] >= float(qc_value) and i[0] != "null"] for x in results]
+
+    for parts in results:
+        parent_list = J
+        current_list = J
+
+        for index, part in enumerate(parts):
+            for item in current_list:
+                if part in item:
+                    parent_list, current_list = current_list, item[part]
+                    break
+            else:
+                if index == len(parts):
+                    current_list.append(part)
+                else:
+                    new_list = []
+                    current_list.append({part:new_list})
+                    current_list = new_list
+                    parent_list = current_list
+
+
+    return jsonify(J)
+
+@app.route("/classifiers/<model_id>/results///<job_hash>/get/", methods=["GET"])
 def results_getter(model_id, job_hash):
     # Generate job fp here.
     job_fp = os.path.join(Config.STORAGE_DIR, job_hash + ".json")
