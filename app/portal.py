@@ -86,8 +86,13 @@ def classifier(model_id):
 def results(model_id, job_hash):
     return render_template("classifiers/results.html")
 
+@app.route("/classifiers/<model_id>/results/<job_hash>/testtree/<qc_value>")
+def test_tree(model_id, job_hash, qc_value):
+    return render_template("classifiers/tree.html")
+
+
 @app.route("/classifiers/<model_id>/results/<job_hash>/tree/<qc_value>", methods=["GET"])
-def tree(model_id, job_hash, qc_value):
+def generate_tree(model_id, job_hash, qc_value):
     job_fp = os.path.join(Config.STORAGE_DIR, job_hash + ".json")
     with open(job_fp, "r") as infile:
         job_details = json.load(infile)
