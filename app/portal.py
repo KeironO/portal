@@ -36,8 +36,8 @@ def classifiers():
     splits = [[{y: classifiers_dict[y]} for y in identifiers[x:x+2]] for x in range(0, len(identifiers), 2)]
 
     for index, i in enumerate(splits):
-        if len(i) < 2:
-            for i in range(2 - len(i)):
+        if len(i) < 3:
+            for i in range(3 - len(i)):
                 splits[index].append(blank)
 
     return render_template("classifiers/index.html", splits=splits)
@@ -137,6 +137,8 @@ def generate_tree(model_id, job_hash, qc_value):
             val = ("value", val)
         return dict([("name", str("%s (%i)" % (name, counts[name]))), val])
 
+    # Calculate percentage after transform_node\
+
     return jsonify(transform_node("root", J))
 
 @app.route("/classifiers/<model_id>/results/<job_hash>/get", methods=["GET"])
@@ -155,7 +157,6 @@ def results_getter(model_id, job_hash):
             parser = {"_items" : []}
             for key, values in response.json().items():
                 parser["_items"].append({"seq_id":key, "predictions" : values})
-
             job_details["results"] = parser
             with open(job_fp, "w") as outfile:
                 json.dump(job_details, outfile, indent=4)
