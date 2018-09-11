@@ -220,40 +220,34 @@ $(document).ready(function() {
         new_predictions = []
 
 
-
-
-        predictions.forEach(function(result) {
-            var qc_ed = [];
-
-
-            var preds = result["predictions"].reverse();
-
-
-            for (i=0; i<preds.length; i++) {
-              var pred = preds[i];
-
-              if (pred[0] != "null") {
-                // Inference
-                if (pred[1] >= limits[qcValue]) {
-                    qc_ed.push(pred);
-                }
-                else {
-                }
-
-              } else {
-
-              }
-
+    for (var result of predictions) {
+        var predictions = result["predictions"];
+        var binary = [];
+        for (var p of predictions) {
+          if (p[0] != "null") {
+            if (p[1] >= limits[qcValue]) {
+              binary.push(true);
             }
+            else {
+              binary.push(false);
+            }
+          }
+          else {
+            binary.push(false)
+          }
 
+        }
 
+        var cutoff_indx = binary.lastIndexOf(true);
 
+        var predictions_infer = predictions.slice(0, cutoff_indx);
 
-            new_predictions.push({
-                "seq_id": result["seq_id"],
-                "predictions": qc_ed.reverse()
-            })
+        new_predictions.push({
+          "seq_id": result["seq_id"],
+          "predictions": predictions_infer
         });
+    }
+
 
         return new_predictions
     }
