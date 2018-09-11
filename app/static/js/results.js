@@ -7,7 +7,7 @@ $(document).ready(function() {
     $.getJSON(get_url, function(data) {
         var predictions = data["_items"];
         chart(predictions);
-        populateTable(predictions);
+        populateTable(predictions, "none");
         renderTree("none");
         resultsShow(500, true);
 
@@ -16,8 +16,10 @@ $(document).ready(function() {
             resultsHide(100, false);
             var qcPredictions = limitPredictions(predictions, this.value);
             chart(qcPredictions);
-            populateTable(qcPredictions);
+            populateTable(qcPredictions, this.value);
+            renderTree(this.value);
             resultsShow(100, false);
+
         });
     });
 
@@ -30,9 +32,9 @@ $(document).ready(function() {
             "ridiculous": 0.97
         }
 
-        limits[qcValue];
+        var limit_value = limits[qcValue];
 
-        var tree_url = window.location.href + "/tree/0";
+        var tree_url = window.location.href + "/tree/" + limit_value.toString();
 
         var m = [20, 120, 20, 120]
         var w = 800 - m[-1] - m[3]
@@ -47,7 +49,7 @@ $(document).ready(function() {
                 return [d.y, d.x];
             });
 
-
+        d3.select("#tree svg").remove();
         var vis = d3.select("#tree").append("svg:svg")
             .attr("width", w + m[1] + m[3])
             .attr("height", h + m[0] + m[2])
@@ -240,7 +242,7 @@ $(document).ready(function() {
 
         var cutoff_indx = binary.lastIndexOf(true);
 
-        var predictions_infer = predictions.slice(0, cutoff_indx);
+        var predictions_infer = predictions.slice(0, cutoff_indx+1);
 
         new_predictions.push({
           "seq_id": result["seq_id"],
@@ -253,7 +255,19 @@ $(document).ready(function() {
     }
 
 
-    function populateTable(predictions) {
+    function populateTable(predictions, qcValue) {
+
+
+    var limits = {
+            "none": 0.0,
+            "low": 0.5,
+            "medium": 0.7,
+            "high": 0.85,
+            "ridiculous": 0.97
+        }
+
+        var pred_lim = limits[qcValue];
+
         $("#results-table").DataTable({
             "destroy": true,
             "data": predictions,
@@ -275,7 +289,14 @@ $(document).ready(function() {
                         for (i in data) {
                             var prediction = data[i];
                             if (prediction[0] != "null") {
+                                if (prediction[1] <= pred_lim) {
+                                final_str += '<span data-toggle="tooltip" data-placement="top" class="text-danger" title="Confidence Value: ' + prediction[1] * 100 + '%">' + prediction[0] + '; </span>'
+                                }
+
+                                else{
                                 final_str += '<span data-toggle="tooltip" data-placement="top" title="Confidence Value: ' + prediction[1] * 100 + '%">' + prediction[0] + '; </span>'
+                                }
+
                             }
                         }
                         return final_str
